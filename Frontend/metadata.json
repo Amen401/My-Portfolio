@@ -1,0 +1,6 @@
+{
+  "name": "Pawlos's Engineering Portfolio",
+  "description": "High-performance full-stack portfolio with Emerald theme, dark mode, and integrated admin control center.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
