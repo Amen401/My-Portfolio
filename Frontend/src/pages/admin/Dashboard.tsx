@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { getProjects, getMessages, getTechLogos, MOCK_PROFILE } from '@/src/services/api';
-import { IProject, IMessage, ITechLogo } from '@/src/types';
+import { getProjects, getMessages, getTechLogos, getProfile } from '@/src/services/api';
+import { IProject, IMessage, ITechLogo, IProfile } from '@/src/types';
 import { LayoutGrid, MessageSquare, Plus, ExternalLink, Settings, LogOut, User, Database } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/src/contexts/AuthContext';
@@ -9,13 +9,15 @@ export default function Dashboard() {
   const [projects, setProjects] = useState<IProject[]>([]);
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [techLogos, setTechLogos] = useState<ITechLogo[]>([]);
+  const [profile, setProfile] = useState<IProfile | null>(null);
   const navigate = useNavigate();
   const { logout, user } = useAuth();
 
   useEffect(() => {
-    getProjects().then(setProjects);
-    getMessages().then(setMessages);
-    getTechLogos().then(setTechLogos);
+    getProjects().then(setProjects).catch(() => setProjects([]));
+    getMessages().then(setMessages).catch(() => setMessages([]));
+    getTechLogos().then(setTechLogos).catch(() => setTechLogos([]));
+    getProfile().then(setProfile).catch(() => setProfile(null));
   }, []);
 
   const handleLogout = () => {
@@ -79,25 +81,31 @@ export default function Dashboard() {
               <Link to="/admin/profile" className="text-[10px] font-black uppercase tracking-widest text-primary hover:text-primary/80 transition-colors cursor-pointer">Edit All</Link>
            </div>
            <div className="bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-md p-6 space-y-6">
-              <div className="flex items-center gap-4">
-                 <div className="w-16 h-16 rounded-md overflow-hidden bg-neutral-100 dark:bg-black border border-neutral-100 dark:border-neutral-800">
-                    <img src={MOCK_PROFILE.profilePic} alt="Profile" className="w-full h-full object-cover" />
-                 </div>
-                 <div className="flex flex-col">
-                    <span className="text-sm font-bold text-neutral-900 dark:text-neutral-100">{MOCK_PROFILE.fullName}</span>
-                    <span className="text-[10px] text-neutral-400 font-medium uppercase tracking-wider">{MOCK_PROFILE.profession}</span>
-                 </div>
-              </div>
-              <div className="space-y-3 pt-4 border-t border-neutral-50 dark:border-neutral-900">
-                 <div className="flex items-center justify-between text-[10px]">
-                    <span className="text-neutral-400 font-bold uppercase tracking-widest">Experience</span>
-                    <span className="font-mono text-primary">{MOCK_PROFILE.yearsOfExperience}</span>
-                 </div>
-                 <div className="flex items-center justify-between text-[10px]">
-                    <span className="text-neutral-400 font-bold uppercase tracking-widest">Location</span>
-                    <span className="font-mono">{MOCK_PROFILE.address}</span>
-                 </div>
-              </div>
+              {profile ? (
+                <>
+                  <div className="flex items-center gap-4">
+                     <div className="w-16 h-16 rounded-md overflow-hidden bg-neutral-100 dark:bg-black border border-neutral-100 dark:border-neutral-800">
+                        <img src={profile.profilePic} alt="Profile" className="w-full h-full object-cover" />
+                     </div>
+                     <div className="flex flex-col">
+                        <span className="text-sm font-bold text-neutral-900 dark:text-neutral-100">{profile.fullName}</span>
+                        <span className="text-[10px] text-neutral-400 font-medium uppercase tracking-wider">{profile.profession}</span>
+                     </div>
+                  </div>
+                  <div className="space-y-3 pt-4 border-t border-neutral-50 dark:border-neutral-900">
+                     <div className="flex items-center justify-between text-[10px]">
+                        <span className="text-neutral-400 font-bold uppercase tracking-widest">Experience</span>
+                        <span className="font-mono text-primary">{profile.yearsOfExperience}</span>
+                     </div>
+                     <div className="flex items-center justify-between text-[10px]">
+                        <span className="text-neutral-400 font-bold uppercase tracking-widest">Location</span>
+                        <span className="font-mono">{profile.address}</span>
+                     </div>
+                  </div>
+                </>
+              ) : (
+                <div className="text-xs text-neutral-500">Failed to load profile. Ensure the backend is running.</div>
+              )}
               <Link
                 to="/admin/profile"
                 className="w-full py-3 bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 rounded-md flex items-center justify-center gap-2 hover:bg-primary hover:text-white transition-all cursor-pointer text-sm font-medium"

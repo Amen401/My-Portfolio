@@ -1,0 +1,3540 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.env.example
+.gitignore
+eslint.config.js
+index.html
+metadata.json
+package.json
+postcss.config.js
+public/favicon.svg
+public/icons.svg
+README.md
+server.ts
+src/App.tsx
+src/components/auth/ProtectedRoute.tsx
+src/components/layout/AdminSidebar.tsx
+src/components/layout/Footer.tsx
+src/components/layout/Header.tsx
+src/components/layout/PageLayout.tsx
+src/components/layout/ThemeToggle.tsx
+src/components/projects/ProjectCard.tsx
+src/components/projects/SearchBar.tsx
+src/components/ui/ConfirmDialog.tsx
+src/components/ui/Modal.tsx
+src/components/ui/Toast.tsx
+src/contexts/AuthContext.tsx
+src/index.css
+src/lib/utils.ts
+src/main.tsx
+src/pages/admin/Dashboard.tsx
+src/pages/admin/EditProfile.tsx
+src/pages/admin/Login.tsx
+src/pages/admin/ManageProjects.tsx
+src/pages/admin/ManageTechStack.tsx
+src/pages/admin/ViewMessages.tsx
+src/pages/public/Contact.tsx
+src/pages/public/Home.tsx
+src/pages/public/ProjectDetails.tsx
+src/pages/public/Projects.tsx
+src/services/api.ts
+src/types.ts
+tailwind.config.js
+tsconfig.app.json
+tsconfig.json
+tsconfig.node.json
+vite.config.ts
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".env.example">
+# GEMINI_API_KEY: Required for Gemini AI API calls.
+# AI Studio automatically injects this at runtime from user secrets.
+# Users configure this via the Secrets panel in the AI Studio UI.
+GEMINI_API_KEY="MY_GEMINI_API_KEY"
+
+# APP_URL: The URL where this applet is hosted.
+# AI Studio automatically injects this at runtime with the Cloud Run service URL.
+# Used for self-referential links, OAuth callbacks, and API endpoints.
+APP_URL="MY_APP_URL"
+</file>
+
+<file path=".gitignore">
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+</file>
+
+<file path="eslint.config.js">
+import js from '@eslint/js'
+import globals from 'globals'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import tseslint from 'typescript-eslint'
+import { defineConfig, globalIgnores } from 'eslint/config'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      reactHooks.configs.flat.recommended,
+      reactRefresh.configs.vite,
+    ],
+    languageOptions: {
+      globals: globals.browser,
+    },
+  },
+])
+</file>
+
+<file path="index.html">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Google AI Studio App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+</file>
+
+<file path="metadata.json">
+{
+  "name": "Pawlos's Engineering Portfolio",
+  "description": "High-performance full-stack portfolio with Emerald theme, dark mode, and integrated admin control center.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+</file>
+
+<file path="package.json">
+{
+  "name": "react-example",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx server.ts",
+    "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
+    "start": "node dist/server.cjs",
+    "clean": "rm -rf dist server.js",
+    "lint": "tsc --noEmit",
+    "repomix": "repomix"
+  },
+  "dependencies": {
+    "@google/genai": "^2.3.0",
+    "@tailwindcss/vite": "^4.1.14",
+    "@vitejs/plugin-react": "^5.0.4",
+    "axios": "^1.16.1",
+    "clsx": "^2.1.1",
+    "dotenv": "^17.2.3",
+    "express": "^4.21.2",
+    "lucide-react": "^0.546.0",
+    "motion": "^12.23.24",
+    "react": "^19.0.1",
+    "react-dom": "^19.0.1",
+    "react-router-dom": "^7.15.1",
+    "repomix": "^1.14.0",
+    "tailwind-merge": "^3.6.0",
+    "vite": "^6.2.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.14.0",
+    "autoprefixer": "^10.4.21",
+    "esbuild": "^0.25.0",
+    "tailwindcss": "^4.1.14",
+    "tsx": "^4.21.0",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.3"
+  }
+}
+</file>
+
+<file path="postcss.config.js">
+export default {
+  plugins: {
+    "@tailwindcss/postcss": {},
+    autoprefixer: {},
+  },
+};
+</file>
+
+<file path="public/favicon.svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="46" fill="none" viewBox="0 0 48 46"><path fill="#863bff" d="M25.946 44.938c-.664.845-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.287c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.497 0-3.578-1.842-3.578H1.237c-.92 0-1.456-1.04-.92-1.788L10.013.474c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.579 1.842 3.579h11.377c.943 0 1.473 1.088.89 1.83L25.947 44.94z" style="fill:#863bff;fill:color(display-p3 .5252 .23 1);fill-opacity:1"/><mask id="a" width="48" height="46" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha"><path fill="#000" d="M25.842 44.938c-.664.844-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.183c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.498 0-3.579-1.842-3.579H1.133c-.92 0-1.456-1.04-.92-1.787L9.91.473c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.578 1.842 3.578h11.377c.943 0 1.473 1.088.89 1.832L25.843 44.94z" style="fill:#000;fill-opacity:1"/></mask><g mask="url(#a)"><g filter="url(#b)"><ellipse cx="5.508" cy="14.704" fill="#ede6ff" rx="5.508" ry="14.704" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -4.47 31.516)"/></g><g filter="url(#c)"><ellipse cx="10.399" cy="29.851" fill="#ede6ff" rx="10.399" ry="29.851" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -39.328 7.883)"/></g><g filter="url(#d)"><ellipse cx="5.508" cy="30.487" fill="#7e14ff" rx="5.508" ry="30.487" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -25.913 -14.639)scale(1 -1)"/></g><g filter="url(#e)"><ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -32.644 -3.334)scale(1 -1)"/></g><g filter="url(#f)"><ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -34.34 30.47)"/></g><g filter="url(#g)"><ellipse cx="14.072" cy="22.078" fill="#ede6ff" rx="14.072" ry="22.078" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="rotate(93.35 24.506 48.493)scale(-1 1)"/></g><g filter="url(#h)"><ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/></g><g filter="url(#i)"><ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/></g><g filter="url(#j)"><ellipse cx=".387" cy="8.972" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(39.51 .387 8.972)"/></g><g filter="url(#k)"><ellipse cx="47.523" cy="-6.092" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 47.523 -6.092)"/></g><g filter="url(#l)"><ellipse cx="41.412" cy="6.333" fill="#47bfff" rx="5.971" ry="9.665" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 41.412 6.333)"/></g><g filter="url(#m)"><ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/></g><g filter="url(#n)"><ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/></g><g filter="url(#o)"><ellipse cx="35.651" cy="29.907" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 35.651 29.907)"/></g><g filter="url(#p)"><ellipse cx="38.418" cy="32.4" fill="#47bfff" rx="5.971" ry="15.297" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 38.418 32.4)"/></g></g><defs><filter id="b" width="60.045" height="41.654" x="-19.77" y="16.149" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="c" width="90.34" height="51.437" x="-54.613" y="-7.533" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="d" width="79.355" height="29.4" x="-49.64" y="2.03" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="e" width="79.579" height="29.4" x="-45.045" y="20.029" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="f" width="79.579" height="29.4" x="-43.513" y="21.178" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="g" width="74.749" height="58.852" x="15.756" y="-17.901" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="h" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="i" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="j" width="56.045" height="63.649" x="-27.636" y="-22.853" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="k" width="54.814" height="64.646" x="20.116" y="-38.415" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="l" width="33.541" height="35.313" x="24.641" y="-11.323" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="m" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="n" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="o" width="54.814" height="64.646" x="8.244" y="-2.416" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="p" width="39.409" height="43.623" x="18.713" y="10.588" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter></defs></svg>
+</file>
+
+<file path="public/icons.svg">
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="bluesky-icon" viewBox="0 0 16 17">
+    <g clip-path="url(#bluesky-clip)"><path fill="#08060d" d="M7.75 7.735c-.693-1.348-2.58-3.86-4.334-5.097-1.68-1.187-2.32-.981-2.74-.79C.188 2.065.1 2.812.1 3.251s.241 3.602.398 4.13c.52 1.744 2.367 2.333 4.07 2.145-2.495.37-4.71 1.278-1.805 4.512 3.196 3.309 4.38-.71 4.987-2.746.608 2.036 1.307 5.91 4.93 2.746 2.72-2.746.747-4.143-1.747-4.512 1.702.189 3.55-.4 4.07-2.145.156-.528.397-3.691.397-4.13s-.088-1.186-.575-1.406c-.42-.19-1.06-.395-2.741.79-1.755 1.24-3.64 3.752-4.334 5.099"/></g>
+    <defs><clipPath id="bluesky-clip"><path fill="#fff" d="M.1.85h15.3v15.3H.1z"/></clipPath></defs>
+  </symbol>
+  <symbol id="discord-icon" viewBox="0 0 20 19">
+    <path fill="#08060d" d="M16.224 3.768a14.5 14.5 0 0 0-3.67-1.153c-.158.286-.343.67-.47.976a13.5 13.5 0 0 0-4.067 0c-.128-.306-.317-.69-.476-.976A14.4 14.4 0 0 0 3.868 3.77C1.546 7.28.916 10.703 1.231 14.077a14.7 14.7 0 0 0 4.5 2.306q.545-.748.965-1.587a9.5 9.5 0 0 1-1.518-.74q.191-.14.372-.293c2.927 1.369 6.107 1.369 8.999 0q.183.152.372.294-.723.437-1.52.74.418.838.963 1.588a14.6 14.6 0 0 0 4.504-2.308c.37-3.911-.63-7.302-2.644-10.309m-9.13 8.234c-.878 0-1.599-.82-1.599-1.82 0-.998.705-1.82 1.6-1.82.894 0 1.614.82 1.599 1.82.001 1-.705 1.82-1.6 1.82m5.91 0c-.878 0-1.599-.82-1.599-1.82 0-.998.705-1.82 1.6-1.82.893 0 1.614.82 1.599 1.82 0 1-.706 1.82-1.6 1.82"/>
+  </symbol>
+  <symbol id="documentation-icon" viewBox="0 0 21 20">
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="m15.5 13.333 1.533 1.322c.645.555.967.833.967 1.178s-.322.623-.967 1.179L15.5 18.333m-3.333-5-1.534 1.322c-.644.555-.966.833-.966 1.178s.322.623.966 1.179l1.534 1.321"/>
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M17.167 10.836v-4.32c0-1.41 0-2.117-.224-2.68-.359-.906-1.118-1.621-2.08-1.96-.599-.21-1.349-.21-2.848-.21-2.623 0-3.935 0-4.983.369-1.684.591-3.013 1.842-3.641 3.428C3 6.449 3 7.684 3 10.154v2.122c0 2.558 0 3.838.706 4.726q.306.383.713.671c.76.536 1.79.64 3.581.66"/>
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M3 10a2.78 2.78 0 0 1 2.778-2.778c.555 0 1.209.097 1.748-.047.48-.129.854-.503.982-.982.145-.54.048-1.194.048-1.749a2.78 2.78 0 0 1 2.777-2.777"/>
+  </symbol>
+  <symbol id="github-icon" viewBox="0 0 19 19">
+    <path fill="#08060d" fill-rule="evenodd" d="M9.356 1.85C5.05 1.85 1.57 5.356 1.57 9.694a7.84 7.84 0 0 0 5.324 7.44c.387.079.528-.168.528-.376 0-.182-.013-.805-.013-1.454-2.165.467-2.616-.935-2.616-.935-.349-.91-.864-1.143-.864-1.143-.71-.48.051-.48.051-.48.787.051 1.2.805 1.2.805.695 1.194 1.817.857 2.268.649.064-.507.27-.857.49-1.052-1.728-.182-3.545-.857-3.545-3.87 0-.857.31-1.558.8-2.104-.078-.195-.349-1 .077-2.078 0 0 .657-.208 2.14.805a7.5 7.5 0 0 1 1.946-.26c.657 0 1.328.092 1.946.26 1.483-1.013 2.14-.805 2.14-.805.426 1.078.155 1.883.078 2.078.502.546.799 1.247.799 2.104 0 3.013-1.818 3.675-3.558 3.87.284.247.528.714.528 1.454 0 1.052-.012 1.896-.012 2.156 0 .208.142.455.528.377a7.84 7.84 0 0 0 5.324-7.441c.013-4.338-3.48-7.844-7.773-7.844" clip-rule="evenodd"/>
+  </symbol>
+  <symbol id="social-icon" viewBox="0 0 20 20">
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M12.5 6.667a4.167 4.167 0 1 0-8.334 0 4.167 4.167 0 0 0 8.334 0"/>
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M2.5 16.667a5.833 5.833 0 0 1 8.75-5.053m3.837.474.513 1.035c.07.144.257.282.414.309l.93.155c.596.1.736.536.307.965l-.723.73a.64.64 0 0 0-.152.531l.207.903c.164.715-.213.991-.84.618l-.872-.52a.63.63 0 0 0-.577 0l-.872.52c-.624.373-1.003.094-.84-.618l.207-.903a.64.64 0 0 0-.152-.532l-.723-.729c-.426-.43-.289-.864.306-.964l.93-.156a.64.64 0 0 0 .412-.31l.513-1.034c.28-.562.735-.562 1.012 0"/>
+  </symbol>
+  <symbol id="x-icon" viewBox="0 0 19 19">
+    <path fill="#08060d" fill-rule="evenodd" d="M1.893 1.98c.052.072 1.245 1.769 2.653 3.77l2.892 4.114c.183.261.333.48.333.486s-.068.089-.152.183l-.522.593-.765.867-3.597 4.087c-.375.426-.734.834-.798.905a1 1 0 0 0-.118.148c0 .01.236.017.664.017h.663l.729-.83c.4-.457.796-.906.879-.999a692 692 0 0 0 1.794-2.038c.034-.037.301-.34.594-.675l.551-.624.345-.392a7 7 0 0 1 .34-.374c.006 0 .93 1.306 2.052 2.903l2.084 2.965.045.063h2.275c1.87 0 2.273-.003 2.266-.021-.008-.02-1.098-1.572-3.894-5.547-2.013-2.862-2.28-3.246-2.273-3.266.008-.019.282-.332 2.085-2.38l2-2.274 1.567-1.782c.022-.028-.016-.03-.65-.03h-.674l-.3.342a871 871 0 0 1-1.782 2.025c-.067.075-.405.458-.75.852a100 100 0 0 1-.803.91c-.148.172-.299.344-.99 1.127-.304.343-.32.358-.345.327-.015-.019-.904-1.282-1.976-2.808L6.365 1.85H1.8zm1.782.91 8.078 11.294c.772 1.08 1.413 1.973 1.425 1.984.016.017.241.02 1.05.017l1.03-.004-2.694-3.766L7.796 5.75 5.722 2.852l-1.039-.004-1.039-.004z" clip-rule="evenodd"/>
+  </symbol>
+</svg>
+</file>
+
+<file path="README.md">
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+</div>
+
+# Run and deploy your AI Studio app
+
+This contains everything you need to run your app locally.
+
+View your app in AI Studio: https://ai.studio/apps/d8e5aab2-9e0e-4840-bbe4-c3be711f59a8
+
+## Run Locally
+
+**Prerequisites:**  Node.js
+
+
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`
+</file>
+
+<file path="server.ts">
+import express from "express";
+import path from "path";
+import { createServer as createViteServer } from "vite";
+
+let MOCK_PROJECTS = [
+  {
+    id: '1',
+    title: 'E-commerce Platform',
+    description: 'A full-stack e-commerce solution with React and Node.js.',
+    techStack: ['React', 'Node.js', 'MongoDB', 'Tailwind CSS'],
+    status: 'Completed',
+    githubLink: 'https://github.com',
+    problem: 'Existing platforms were too slow.',
+    solution: 'Built a lightweight custom solution.',
+    features: ['Real-time inventory', 'Stripe integration'],
+  },
+  {
+    id: '2',
+    title: 'Task Management App',
+    description: 'Collaborative task management for teams.',
+    techStack: ['React', 'Firebase', 'Framer Motion'],
+    status: 'In Progress',
+    githubLink: 'https://github.com',
+    problem: 'Team communication fragmentation.',
+    solution: 'Centralized task tracking.',
+    features: ['Kanban boards', 'Team chat'],
+  }
+];
+
+const MOCK_TECH_LOGOS = [
+  { id: '1', name: 'React', logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
+  { id: '2', name: 'Node.js', logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
+  { id: '3', name: 'TypeScript', logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg' },
+  { id: '4', name: 'MongoDB', logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg' },
+  { id: '5', name: 'Tailwind', logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original-wordmark.svg' },
+  { id: '6', name: 'Docker', logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg' },
+];
+
+async function startServer() {
+  const app = express();
+  const PORT = 3000;
+
+  app.use(express.json());
+
+  // API Routes
+  app.get("/api/projects", (req, res) => {
+    const { search } = req.query;
+    let projects = [...MOCK_PROJECTS];
+    
+    if (search && typeof search === 'string') {
+      const s = search.toLowerCase();
+      projects = projects.filter(p => 
+        p.title.toLowerCase().includes(s) || 
+        p.description.toLowerCase().includes(s) ||
+        p.techStack.some(t => t.toLowerCase().includes(s))
+      );
+    }
+    
+    res.json(projects);
+  });
+
+  app.post("/api/projects", (req, res) => {
+    const newProject = { ...req.body, id: Math.random().toString(36).substr(2, 9) };
+    MOCK_PROJECTS.unshift(newProject);
+    res.status(201).json(newProject);
+  });
+
+  app.put("/api/projects/:id", (req, res) => {
+    const { id } = req.params;
+    MOCK_PROJECTS = MOCK_PROJECTS.map(p => p.id === id ? { ...p, ...req.body } : p);
+    res.json({ message: "Updated" });
+  });
+
+  app.delete("/api/projects/:id", (req, res) => {
+    const { id } = req.params;
+    MOCK_PROJECTS = MOCK_PROJECTS.filter(p => p.id !== id);
+    res.status(204).send();
+  });
+
+  app.get("/api/tech-logos", (req, res) => {
+    const { search } = req.query;
+    let logos = [...MOCK_TECH_LOGOS];
+    
+    if (search && typeof search === 'string') {
+      const s = search.toLowerCase();
+      logos = logos.filter(l => l.name.toLowerCase().includes(s));
+    }
+    
+    res.json(logos);
+  });
+
+  app.get("/api/profile", (req, res) => {
+    res.json({
+      fullName: 'Pawlos Gelgelo',
+      bio: 'Software Engineer dedicated to building impactful digital experiences through clean code and innovative design.',
+      cvUrl: '#',
+      profilePic: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop',
+      linkedin: '#',
+      telegram: '#',
+      github: '#',
+      website: '#',
+      address: 'Addis Ababa, Ethiopia',
+      phone: '+251 900 000 000',
+      yearsOfExperience: '3+',
+      profession: 'Software Engineer',
+      description: 'A versatile software engineer with a focus on creating scalable, user-centric applications. I thrive on solving complex problems and continually learning new frameworks to deliver high-quality software solutions.',
+      username: 'admin',
+      password: 'password123',
+    });
+  });
+
+  app.get("/api/messages", (req, res) => {
+    // In a real app we'd filter from DB, here we simulate backend filtering
+    const { search } = req.query;
+    let messages = [
+      {
+        id: '1',
+        name: 'Jane Smith',
+        email: 'jane@example.com',
+        message: 'Hello Pawlos! I am very impressed with your portfolio projects, specifically the E-commerce platform.',
+        createdAt: new Date().toISOString(),
+        isRead: false,
+        isIgnored: false,
+      }
+    ];
+
+    if (search && typeof search === 'string') {
+      const s = search.toLowerCase();
+      messages = messages.filter(m => 
+        m.name.toLowerCase().includes(s) || 
+        m.email.toLowerCase().includes(s) || 
+        m.message.toLowerCase().includes(s)
+      );
+    }
+
+    res.json(messages);
+  });
+
+  // Vite middleware for development
+  if (process.env.NODE_ENV !== "production") {
+    const vite = await createViteServer({
+      server: { middlewareMode: true },
+      appType: "spa",
+    });
+    app.use(vite.middlewares);
+  } else {
+    const distPath = path.join(process.cwd(), 'dist');
+    app.use(express.static(distPath));
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(distPath, 'index.html'));
+    });
+  }
+
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+startServer();
+</file>
+
+<file path="src/App.tsx">
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { PageLayout } from './components/layout/PageLayout';
+import { ProtectedRoute } from './components/auth/ProtectedRoute';
+
+// Public Pages
+import Home from './pages/public/Home';
+import Projects from './pages/public/Projects';
+import ProjectDetails from './pages/public/ProjectDetails';
+import Contact from './pages/public/Contact';
+
+// Admin Pages
+import Login from './pages/admin/Login';
+import Dashboard from './pages/admin/Dashboard';
+import ManageProjects from './pages/admin/ManageProjects';
+import EditProfile from './pages/admin/EditProfile';
+import ViewMessages from './pages/admin/ViewMessages';
+import ManageTechStack from './pages/admin/ManageTechStack';
+
+import { ToastProvider } from './components/ui/Toast';
+import { ConfirmProvider } from './components/ui/ConfirmDialog';
+import { AuthProvider } from './contexts/AuthContext';
+
+export default function App() {
+  return (
+    <Router>
+      <AuthProvider>
+        <ConfirmProvider>
+          <ToastProvider>
+            <PageLayout>
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<Home />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route path="/projects/:id" element={<ProjectDetails />} />
+                <Route path="/contact" element={<Contact />} />
+
+                {/* Admin Routes */}
+                <Route path="/admin/login" element={<Login />} />
+                <Route path="/admin" element={<ProtectedRoute />}>
+                  <Route path="dashboard" element={<Dashboard />} />
+                  <Route path="manage-projects" element={<ManageProjects />} />
+                  <Route path="tech-stack" element={<ManageTechStack />} />
+                  <Route path="profile" element={<EditProfile />} />
+                  <Route path="messages" element={<ViewMessages />} />
+                </Route>
+              </Routes>
+            </PageLayout>
+          </ToastProvider>
+        </ConfirmProvider>
+      </AuthProvider>
+    </Router>
+  );
+}
+</file>
+
+<file path="src/components/auth/ProtectedRoute.tsx">
+import { Navigate, Outlet } from 'react-router-dom';
+import AdminSidebar from '../layout/AdminSidebar';
+import { useAuth } from '@/src/contexts/AuthContext';
+
+export function ProtectedRoute() {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/admin/login" replace />;
+  }
+
+  return (
+    <div className="flex h-[calc(100vh-3.5rem)] bg-neutral-50 dark:bg-black overflow-hidden" id="admin-layout-root">
+      <AdminSidebar />
+      <main className="flex-1 overflow-y-auto custom-scrollbar" id="admin-content">
+        <div className="p-4 md:p-8 pb-32">
+          <Outlet />
+        </div>
+      </main>
+    </div>
+  );
+}
+</file>
+
+<file path="src/components/layout/AdminSidebar.tsx">
+import { NavLink, Link, useLocation } from 'react-router-dom';
+import { 
+  LayoutDashboard, 
+  FolderKanban, 
+  Database, 
+  UserCircle, 
+  Mail, 
+  LogOut,
+  ChevronLeft,
+  ChevronRight,
+  Menu,
+  X
+} from 'lucide-react';
+import { useState } from 'react';
+import { cn } from '@/src/lib/utils';
+
+export default function AdminSidebar() {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const location = useLocation();
+
+  const menuItems = [
+    { name: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
+    { name: 'Projects', path: '/admin/manage-projects', icon: FolderKanban },
+    { name: 'Tech Stack', path: '/admin/tech-stack', icon: Database },
+    { name: 'Profile', path: '/admin/profile', icon: UserCircle },
+    { name: 'Messages', path: '/admin/messages', icon: Mail },
+  ];
+
+  return (
+    <>
+      {/* Mobile Toggle */}
+      <button 
+        onClick={() => setIsMobileOpen(!isMobileOpen)}
+        className="md:hidden fixed bottom-6 right-6 z-[60] p-4 bg-primary text-white rounded-full shadow-lg shadow-primary/30"
+      >
+        <Menu className="w-6 h-6" />
+      </button>
+
+      {/* Backdrop */}
+      {isMobileOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
+          onClick={() => setIsMobileOpen(false)}
+        />
+      )}
+
+      <aside 
+        className={cn(
+          "bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 transition-all duration-300 flex flex-col shrink-0",
+          "fixed inset-y-0 left-0 z-50 md:sticky md:top-0 h-screen md:h-full",
+          isCollapsed ? "w-20" : "w-64",
+          isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        )}
+      >
+        <div className="p-6 flex items-center justify-between">
+          {!isCollapsed && (
+            <Link to="/" className="flex items-center gap-2 group cursor-pointer">
+              <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center text-white font-bold">
+                P
+              </div>
+              <span className="text-sm font-bold uppercase tracking-tight dark:text-white">Admin</span>
+            </Link>
+          )}
+          <button 
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="hidden md:flex p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md transition-colors"
+          >
+            {isCollapsed ? <Menu className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
+          </button>
+          
+          <button 
+             onClick={() => setIsMobileOpen(false)}
+             className="md:hidden p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md"
+          >
+             <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <nav className="flex-1 px-4 space-y-2 mt-4 overflow-y-auto custom-scrollbar">
+          {menuItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              onClick={() => setIsMobileOpen(false)}
+              className={({ isActive }) => cn(
+                "flex items-center gap-4 px-4 py-3 rounded-md transition-all duration-200 group",
+                isActive 
+                  ? "bg-primary text-white shadow-lg shadow-primary/20" 
+                  : "text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white"
+              )}
+            >
+              <item.icon className={cn("w-5 h-5 shrink-0", isCollapsed && "mx-auto")} />
+              {!isCollapsed && <span className="text-[10px] font-bold uppercase tracking-widest">{item.name}</span>}
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className="p-4 border-t border-neutral-100 dark:border-neutral-800">
+          <div className="flex flex-col items-center gap-1">
+             {!isCollapsed && <p className="text-[8px] font-bold uppercase tracking-tighter text-neutral-400">v1.2.0 Stable Build</p>}
+          </div>
+        </div>
+      </aside>
+    </>
+  );
+}
+</file>
+
+<file path="src/components/layout/Footer.tsx">
+import { Github, Linkedin, Send } from 'lucide-react';
+
+export function Footer() {
+  return (
+    <footer className="w-full py-8 mt-auto border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#171717]" id="main-footer">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col items-center md:items-start gap-1">
+            <p className="text-xs text-neutral-500 dark:text-neutral-400">© 2024 Portfolio. Built with React & Tailwind.</p>
+            <p className="text-[10px] text-neutral-400 dark:text-neutral-500 font-mono tracking-tighter uppercase">Decoupled MERN Architecture</p>
+          </div>
+
+          <div className="flex items-center gap-4 text-neutral-400 dark:text-neutral-500" id="footer-socials">
+            <a href="#" className="hover:text-primary transition-colors cursor-pointer"><Github className="w-4 h-4" /></a>
+            <a href="#" className="hover:text-primary transition-colors cursor-pointer"><Linkedin className="w-4 h-4" /></a>
+            <a href="#" className="hover:text-primary transition-colors cursor-pointer"><Send className="w-4 h-4" /></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+</file>
+
+<file path="src/components/layout/Header.tsx">
+import { Link, useLocation } from 'react-router-dom';
+import { LayoutGrid, Home, Mail, User, Shield } from 'lucide-react';
+import { cn } from '@/src/lib/utils';
+import { ThemeToggle } from './ThemeToggle';
+import { useAuth } from '@/src/contexts/AuthContext';
+
+export function Header() {
+  const location = useLocation();
+  const { isAuthenticated } = useAuth();
+  
+  const navItems = [
+    { name: 'Home', path: '/', icon: Home },
+    { name: 'Projects', path: '/projects', icon: LayoutGrid },
+    { name: 'Contact', path: '/contact', icon: Mail },
+  ];
+
+  const isAdminPath = location.pathname.startsWith('/admin');
+
+  return (
+    <header className="sticky top-0 z-50 w-full bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800" id="main-header">
+      <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-3 group cursor-pointer" id="logo-link">
+          <div className="w-10 h-10 rounded-md bg-primary flex items-center justify-center text-white font-bold text-lg group-hover:scale-110 transition-transform">
+            P
+          </div>
+          <span className="text-base font-bold tracking-tight text-neutral-900 dark:text-neutral-100 uppercase">Portfolio</span>
+        </Link>
+
+        {isAdminPath ? (
+          <div className="text-[10px] font-black uppercase tracking-[0.2em] text-primary bg-primary/5 px-3 py-1 rounded-full border border-primary/10">
+            Control Center
+          </div>
+        ) : (
+          <nav className="hidden md:flex items-center gap-2" id="desktop-nav">
+            {navItems.map(item => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={cn(
+                  "px-4 py-2 text-sm font-medium rounded-md transition-colors flex items-center gap-2 cursor-pointer",
+                  location.pathname === item.path
+                    ? "bg-primary/10 text-primary"
+                    : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                )}
+              >
+                <item.icon className="w-4 h-4" />
+                {item.name}
+              </Link>
+            ))}
+          </nav>
+        )}
+
+        <div className="flex items-center gap-3" id="header-actions">
+          <ThemeToggle />
+          <Link
+            to={isAuthenticated ? '/admin/dashboard' : '/admin/login'}
+            className={cn(
+              "p-2.5 rounded-full transition-colors cursor-pointer",
+              isAuthenticated ? "bg-primary text-white" : "text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            )}
+            title="Admin Dashboard"
+          >
+            <Shield className="w-5 h-5" />
+          </Link>
+        </div>
+      </div>
+    </header>
+  );
+}
+</file>
+
+<file path="src/components/layout/PageLayout.tsx">
+import { ReactNode } from 'react';
+import { Header } from './Header';
+import { Footer } from './Footer';
+import { motion, AnimatePresence } from 'motion/react';
+import { useLocation } from 'react-router-dom';
+import { cn } from '@/src/lib/utils';
+
+interface PageLayoutProps {
+  children: ReactNode;
+}
+
+export function PageLayout({ children }: PageLayoutProps) {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith('/admin') && location.pathname !== '/admin/login';
+
+  return (
+    <div className="min-h-screen flex flex-col bg-neutral-50 dark:bg-black font-sans transition-colors duration-300" id="layout-root">
+      <Header />
+      <main className={cn(
+        "flex-1 w-full relative",
+        isAdmin ? "max-w-none" : "max-w-7xl mx-auto px-4 py-8"
+      )} id="main-content">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            transition={{ duration: 0.3 }}
+            className="w-full h-full"
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
+      </main>
+      {!isAdmin && <Footer />}
+    </div>
+  );
+}
+</file>
+
+<file path="src/components/layout/ThemeToggle.tsx">
+import { Sun, Moon } from 'lucide-react';
+import { useState, useEffect } from 'react';
+
+export function ThemeToggle() {
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return document.documentElement.classList.contains('dark') || 
+             (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDark]);
+
+  return (
+    <button
+      onClick={() => setIsDark(!isDark)}
+      className="p-2.5 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-500 transition-colors cursor-pointer"
+      aria-label="Toggle theme"
+    >
+      {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+    </button>
+  );
+}
+</file>
+
+<file path="src/components/projects/ProjectCard.tsx">
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Github, ExternalLink } from 'lucide-react';
+import { IProject } from '@/src/types';
+import { cn } from '@/src/lib/utils';
+import { motion } from 'motion/react';
+
+interface ProjectCardProps {
+  project: IProject;
+  view?: 'grid' | 'list';
+}
+
+export const ProjectCard: React.FC<ProjectCardProps> = ({ project, view = 'grid' }) => {
+  const isGrid = view === 'grid';
+
+  return (
+    <motion.div
+      id={`project-card-${project.id}`}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: isGrid ? -5 : 0 }}
+      transition={{ duration: 0.3 }}
+      className={cn(
+        "group bg-white dark:bg-[#171717] border border-neutral-200 dark:border-neutral-800 rounded-md overflow-hidden shadow-none transition-all",
+        isGrid ? "flex flex-col h-full" : "flex flex-col md:flex-row gap-6 p-4"
+      )}
+    >
+      <div className={cn(
+        "bg-neutral-100 dark:bg-neutral-900 overflow-hidden relative rounded-md",
+        isGrid ? "aspect-video" : "w-full md:w-64 h-48 md:h-auto shrink-0"
+      )} id="project-card-image-container">
+        {project.imageUrl ? (
+          <img
+            src={project.imageUrl}
+            alt={project.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            referrerPolicy="no-referrer"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-neutral-400">
+            <span className="text-xs font-mono uppercase tracking-widest">No Image</span>
+          </div>
+        )}
+        <div className="absolute top-3 right-3 flex gap-2">
+          <span className={cn(
+            "text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full",
+            project.status === 'Completed' ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400" :
+            project.status === 'In Progress' ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400" :
+            "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400"
+          )}>
+            {project.status}
+          </span>
+        </div>
+      </div>
+
+      <div className={cn("flex flex-col flex-1", isGrid ? "p-5" : "py-2")} id="project-card-content">
+        <div className={cn("flex flex-col h-full", !isGrid && "justify-center")}>
+          <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mb-1 group-hover:text-primary transition-colors" id="project-card-title">
+            {project.title}
+          </h3>
+          <p className={cn("text-xs text-neutral-500 dark:text-neutral-400 mb-4", isGrid ? "line-clamp-2" : "line-clamp-3")} id="project-card-description">
+            {project.description}
+          </p>
+
+          <div className="flex flex-wrap gap-1.5 mb-6" id="project-card-techstack">
+            {project.techStack.map((tech, idx) => (
+              <span key={`${tech}-${idx}`} className="text-[10px] font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 px-2 py-0.5 rounded-md">
+                {tech}
+              </span>
+            ))}
+          </div>
+
+          <div className="mt-auto flex items-center justify-between pt-4 border-t border-neutral-100 dark:border-neutral-800" id="project-card-actions">
+            <Link
+              to={`/projects/${project.id}`}
+              className="text-[10px] font-black uppercase tracking-widest text-primary hover:text-primary/80 transition-colors cursor-pointer"
+            >
+              View Details
+            </Link>
+            <div className="flex items-center gap-3 text-neutral-500 dark:text-neutral-400">
+              {project.githubLink && (
+                <a href={project.githubLink} target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors cursor-pointer">
+                  <Github className="w-4 h-4" />
+                </a>
+              )}
+              <Link to={`/projects/${project.id}`} className="hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors cursor-pointer">
+                <ExternalLink className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+</file>
+
+<file path="src/components/projects/SearchBar.tsx">
+import { Search } from 'lucide-react';
+import { cn } from '@/src/lib/utils';
+
+interface SearchBarProps {
+  value: string;
+  onChange: (value: string) => void;
+  className?: string;
+  placeholder?: string;
+}
+
+export function SearchBar({ value, onChange, className, placeholder = "Search projects..." }: SearchBarProps) {
+  return (
+    <div className={cn("relative flex items-center w-full max-w-md", className)} id="search-bar-container">
+      <Search className="absolute left-3 w-4 h-4 text-neutral-500" id="search-icon" />
+      <input
+        id="search-input"
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="w-full pl-10 pr-4 py-2 text-sm bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-md focus:outline-hidden focus:ring-2 focus:ring-primary transition-all"
+      />
+    </div>
+  );
+}
+</file>
+
+<file path="src/components/ui/ConfirmDialog.tsx">
+import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { AlertTriangle, Check, X } from 'lucide-react';
+import { cn } from '@/src/lib/utils';
+
+interface ConfirmOptions {
+  title: string;
+  message: string;
+  confirmTitle?: string;
+  cancelTitle?: string;
+}
+
+interface ConfirmContextType {
+  confirm: (options: ConfirmOptions) => Promise<boolean>;
+}
+
+const ConfirmContext = createContext<ConfirmContextType | undefined>(undefined);
+
+export function ConfirmProvider({ children }: { children: ReactNode }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [options, setOptions] = useState<ConfirmOptions | null>(null);
+  const [resolveFn, setResolveFn] = useState<((value: boolean) => void) | null>(null);
+
+  const confirm = useCallback((opts: ConfirmOptions) => {
+    setOptions(opts);
+    setIsOpen(true);
+    return new Promise<boolean>((resolve) => {
+      setResolveFn(() => resolve);
+    });
+  }, []);
+
+  const handleConfirm = () => {
+    setIsOpen(false);
+    if (resolveFn) resolveFn(true);
+  };
+
+  const handleCancel = () => {
+    setIsOpen(false);
+    if (resolveFn) resolveFn(false);
+  };
+
+  return (
+    <ConfirmContext.Provider value={{ confirm }}>
+      {children}
+      <AnimatePresence>
+        {isOpen && options && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              onClick={handleCancel}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-sm bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-md shadow-2xl p-6 space-y-6 overflow-hidden"
+            >
+              <div className="flex gap-4">
+                <div className="w-12 h-12 shrink-0 rounded-full bg-red-50 dark:bg-red-500/10 flex items-center justify-center text-red-500">
+                  <AlertTriangle className="w-6 h-6" />
+                </div>
+                <div className="space-y-1 mt-1">
+                  <h3 className="text-sm font-black uppercase tracking-tight text-neutral-900 dark:text-neutral-100">{options.title}</h3>
+                  <p className="text-xs text-neutral-500 leading-relaxed">{options.message}</p>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={handleCancel}
+                  className="flex-1 py-2.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-900 dark:text-neutral-100 rounded-md transition-colors cursor-pointer text-sm font-medium"
+                >
+                  {options.cancelTitle || 'Cancel'}
+                </button>
+                <button
+                  onClick={handleConfirm}
+                  className="flex-1 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-md transition-colors flex items-center justify-center gap-2 cursor-pointer text-sm font-medium"
+                >
+                  {options.confirmTitle || 'Proceed'} <Check className="w-4 h-4" />
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </ConfirmContext.Provider>
+  );
+}
+
+export function useConfirm() {
+  const context = useContext(ConfirmContext);
+  if (!context) throw new Error('useConfirm must be used within ConfirmProvider');
+  return context;
+}
+</file>
+
+<file path="src/components/ui/Modal.tsx">
+import { ReactNode, useEffect } from 'react';
+import { X } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { cn } from '@/src/lib/utils';
+
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children: ReactNode;
+  className?: string;
+}
+
+export default function Modal({ isOpen, onClose, title, children, className }: ModalProps) {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className={cn(
+                "bg-white dark:bg-neutral-900 w-full max-w-2xl rounded-md overflow-hidden border border-neutral-200 dark:border-neutral-800",
+                className
+              )}
+            >
+              <div className="flex items-center justify-between p-6 border-b border-neutral-100 dark:border-neutral-800">
+                <h3 className="text-sm font-black uppercase tracking-widest text-neutral-900 dark:text-neutral-100">{title}</h3>
+                <button onClick={onClose} className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md transition-colors cursor-pointer text-sm font-medium">
+                  <X className="w-5 h-5 text-neutral-400" />
+                </button>
+              </div>
+              <div className="p-6 overflow-y-auto max-h-[80vh]">
+                {children}
+              </div>
+            </motion.div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+</file>
+
+<file path="src/components/ui/Toast.tsx">
+import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { CheckCircle2, AlertCircle, X, Info } from 'lucide-react';
+import { cn } from '@/src/lib/utils';
+
+type ToastType = 'success' | 'error' | 'info';
+
+interface Toast {
+  id: string;
+  message: string;
+  type: ToastType;
+}
+
+interface ToastContextType {
+  toast: (message: string, type?: ToastType) => void;
+}
+
+const ToastContext = createContext<ToastContextType | undefined>(undefined);
+
+export function ToastProvider({ children }: { children: ReactNode }) {
+  const [toasts, setToasts] = useState<Toast[]>([]);
+
+  const toast = useCallback((message: string, type: ToastType = 'success') => {
+    const id = Math.random().toString(36).substr(2, 9);
+    setToasts((prev) => [...prev, { id, message, type }]);
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+    }, 3000);
+  }, []);
+
+  return (
+    <ToastContext.Provider value={{ toast }}>
+      {children}
+      <div className="fixed bottom-4 right-4 z-[100] flex flex-col gap-2 pointer-events-none">
+        <AnimatePresence mode="popLayout">
+          {toasts.map((t) => (
+            <motion.div
+              key={t.id}
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
+              layout
+              className={cn(
+                "pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-md shadow-lg border min-w-[280px] max-w-sm",
+                t.type === 'success' && "bg-white dark:bg-neutral-900 border-emerald-100 dark:border-emerald-900/30 text-emerald-600",
+                t.type === 'error' && "bg-white dark:bg-neutral-900 border-red-100 dark:border-red-900/30 text-red-600",
+                t.type === 'info' && "bg-white dark:bg-neutral-900 border-primary/20 dark:border-primary/20 text-primary"
+              )}
+            >
+              <div className="shrink-0">
+                {t.type === 'success' && <CheckCircle2 className="w-5 h-5" />}
+                {t.type === 'error' && <AlertCircle className="w-5 h-5" />}
+                {t.type === 'info' && <Info className="w-5 h-5" />}
+              </div>
+              <p className="text-xs font-bold uppercase tracking-tight flex-1">{t.message}</p>
+              <button 
+                onClick={() => setToasts((prev) => prev.filter((toast) => toast.id !== t.id))}
+                className="p-1 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md transition-colors"
+              >
+                <X className="w-3.5 h-3.5 opacity-50" />
+              </button>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
+    </ToastContext.Provider>
+  );
+}
+
+export function useToast() {
+  const context = useContext(ToastContext);
+  if (!context) throw new Error('useToast must be used within ToastProvider');
+  return context;
+}
+</file>
+
+<file path="src/contexts/AuthContext.tsx">
+import React, { createContext, useContext, useState, useEffect } from 'react';
+
+interface User {
+  email: string;
+  name?: string;
+}
+
+interface AuthContextType {
+  user: User | null;
+  isAuthenticated: boolean;
+  login: (userData: User) => void;
+  logout: () => void;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (e) {
+        setUser(null);
+      }
+    } else {
+      // Compatibility with old isAdminAuth
+      const isAdminAuth = localStorage.getItem('isAdminAuth');
+      if (isAdminAuth === 'true') {
+         const defaultAdmin = { email: 'admin@portfolio.com', name: 'Admin' };
+         setUser(defaultAdmin);
+         localStorage.setItem('user', JSON.stringify(defaultAdmin));
+      }
+    }
+    setIsLoaded(true);
+  }, []);
+
+  const login = (userData: User) => {
+    setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('isAdminAuth', 'true');
+  };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('user');
+    localStorage.removeItem('isAdminAuth');
+  };
+
+  if (!isLoaded) return null;
+
+  return (
+    <AuthContext.Provider value={{
+      user,
+      isAuthenticated: !!user,
+      login,
+      logout
+    }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+}
+</file>
+
+<file path="src/index.css">
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-primary: #10b981;
+  --color-primary-hover: #059669;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  --animate-marquee: marquee 30s linear infinite;
+}
+
+@utility custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #d4d4d4;
+    border-radius: 10px;
+  }
+  .dark &::-webkit-scrollbar-thumb {
+    background: #262626;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
+  }
+}
+
+@layer base {
+  body {
+    @apply antialiased bg-white text-neutral-900 transition-colors duration-300 custom-scrollbar;
+  }
+  .dark body {
+    @apply bg-[#0a0a0a] text-neutral-100;
+  }
+}
+
+/* Force dark mode behavior for classes */
+@custom-variant dark (&:where(.dark, .dark *));
+</file>
+
+<file path="src/lib/utils.ts">
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+</file>
+
+<file path="src/main.tsx">
+import {StrictMode} from 'react';
+import {createRoot} from 'react-dom/client';
+import App from './App.tsx';
+import './index.css';
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+);
+</file>
+
+<file path="src/pages/admin/Dashboard.tsx">
+import { useState, useEffect } from 'react';
+import { getProjects, getMessages, getTechLogos, MOCK_PROFILE } from '@/src/services/api';
+import { IProject, IMessage, ITechLogo } from '@/src/types';
+import { LayoutGrid, MessageSquare, Plus, ExternalLink, Settings, LogOut, User, Database } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/src/contexts/AuthContext';
+
+export default function Dashboard() {
+  const [projects, setProjects] = useState<IProject[]>([]);
+  const [messages, setMessages] = useState<IMessage[]>([]);
+  const [techLogos, setTechLogos] = useState<ITechLogo[]>([]);
+  const navigate = useNavigate();
+  const { logout, user } = useAuth();
+
+  useEffect(() => {
+    getProjects().then(setProjects);
+    getMessages().then(setMessages);
+    getTechLogos().then(setTechLogos);
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/admin/login');
+  };
+
+  return (
+    <div className="space-y-8" id="admin-dashboard">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-neutral-200 dark:border-neutral-800 pb-8" id="dashboard-header">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-black text-neutral-900 dark:text-neutral-100">Control Center</h1>
+          <p className="text-xs text-neutral-500">Welcome back, {user?.name || 'Administrator'}.</p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Link
+            to="/admin/profile"
+            className="px-4 py-2 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md transition-all flex items-center gap-2 cursor-pointer text-sm font-medium"
+          >
+            <User className="w-3.5 h-3.5" /> Profile Settings
+          </Link>
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 text-red-500 hover:bg-neutral-100 dark:hover:bg-red-900/10 rounded-md transition-all flex items-center gap-2 cursor-pointer text-sm font-medium"
+          >
+            Logout <LogOut className="w-3.5 h-3.5" />
+          </button>
+          <Link
+            to="/admin/manage-projects"
+            className="px-6 py-2.5 bg-primary text-white rounded-md flex items-center gap-2 hover:opacity-90 transition-all cursor-pointer text-sm font-medium"
+          >
+            New Project <Plus className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6" id="dashboard-stats">
+        {[
+          { label: 'Live Projects', value: Array.isArray(projects) ? projects.length : 0, icon: LayoutGrid, color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-950/30' },
+          { label: 'Unread Messages', value: Array.isArray(messages) ? messages.length : 0, icon: MessageSquare, color: 'text-primary', bg: 'bg-primary/5 dark:bg-primary/10' },
+          { label: 'Tech Stack', value: Array.isArray(techLogos) ? techLogos.length : 0, icon: Database, color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-950/30' },
+        ].map((stat, i) => (
+          <div key={i} className="p-6 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-md flex items-center gap-4">
+             <div className={`p-3 rounded-md ${stat.bg} ${stat.color}`}>
+                <stat.icon className="w-6 h-6" />
+             </div>
+             <div className="flex flex-col">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">{stat.label}</span>
+                <span className="text-2xl font-black">{stat.value}</span>
+             </div>
+          </div>
+        ))}
+      </div>
+
+       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8" id="dashboard-sections">
+        {/* Profile Quick Access */}
+        <div className="lg:col-span-1 space-y-4">
+           <div className="flex items-center justify-between">
+              <h3 className="text-sm font-bold uppercase tracking-tight">Portfolio Profile</h3>
+              <Link to="/admin/profile" className="text-[10px] font-black uppercase tracking-widest text-primary hover:text-primary/80 transition-colors cursor-pointer">Edit All</Link>
+           </div>
+           <div className="bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-md p-6 space-y-6">
+              <div className="flex items-center gap-4">
+                 <div className="w-16 h-16 rounded-md overflow-hidden bg-neutral-100 dark:bg-black border border-neutral-100 dark:border-neutral-800">
+                    <img src={MOCK_PROFILE.profilePic} alt="Profile" className="w-full h-full object-cover" />
+                 </div>
+                 <div className="flex flex-col">
+                    <span className="text-sm font-bold text-neutral-900 dark:text-neutral-100">{MOCK_PROFILE.fullName}</span>
+                    <span className="text-[10px] text-neutral-400 font-medium uppercase tracking-wider">{MOCK_PROFILE.profession}</span>
+                 </div>
+              </div>
+              <div className="space-y-3 pt-4 border-t border-neutral-50 dark:border-neutral-900">
+                 <div className="flex items-center justify-between text-[10px]">
+                    <span className="text-neutral-400 font-bold uppercase tracking-widest">Experience</span>
+                    <span className="font-mono text-primary">{MOCK_PROFILE.yearsOfExperience}</span>
+                 </div>
+                 <div className="flex items-center justify-between text-[10px]">
+                    <span className="text-neutral-400 font-bold uppercase tracking-widest">Location</span>
+                    <span className="font-mono">{MOCK_PROFILE.address}</span>
+                 </div>
+              </div>
+              <Link
+                to="/admin/profile"
+                className="w-full py-3 bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 rounded-md flex items-center justify-center gap-2 hover:bg-primary hover:text-white transition-all cursor-pointer text-sm font-medium"
+              >
+                <Settings className="w-3 h-3" /> Update Portfolio Profile
+              </Link>
+           </div>
+        </div>
+
+        {/* Recent Projects Table */}
+        <div className="lg:col-span-2 space-y-4">
+           <div className="flex items-center justify-between">
+              <h3 className="text-sm font-bold uppercase tracking-tight">Recent Projects</h3>
+              <Link to="/admin/manage-projects" className="text-[10px] font-black uppercase tracking-widest text-primary hover:text-primary/80 transition-colors cursor-pointer">Manage All</Link>
+           </div>
+           <div className="bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-md overflow-hidden">
+              <table className="w-full text-left border-collapse">
+                 <thead>
+                    <tr className="bg-neutral-50 dark:bg-black/20 text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+                       <th className="p-4 border-b border-neutral-100 dark:border-neutral-800">Title</th>
+                       <th className="p-4 border-b border-neutral-100 dark:border-neutral-800 text-right">Action</th>
+                    </tr>
+                 </thead>
+                 <tbody>
+                    {Array.isArray(projects) && projects.slice(0, 5).map(p => (
+                      <tr key={p.id} className="group hover:bg-neutral-50 dark:hover:bg-neutral-900/50 transition-colors">
+                        <td className="p-4 text-xs font-semibold">{p.title}</td>
+                        <td className="p-4 text-right">
+                           <Link to={`/projects/${p.id}`} className="p-1.5 text-neutral-400 hover:text-primary inline-block cursor-pointer">
+                              <ExternalLink className="w-3.5 h-3.5" />
+                           </Link>
+                        </td>
+                      </tr>
+                    ))}
+                 </tbody>
+              </table>
+           </div>
+        </div>
+
+        {/* Incoming Messages Table */}
+        <div className="space-y-4">
+           <div className="flex items-center justify-between">
+              <h3 className="text-sm font-bold uppercase tracking-tight">Recent Messages</h3>
+              <Link to="/admin/messages" className="text-[10px] font-black uppercase tracking-widest text-primary hover:text-primary/80 transition-colors cursor-pointer">Inbox</Link>
+           </div>
+           <div className="bg-white dark:bg-[#171717] border border-neutral-100 dark:border-neutral-800 rounded-md overflow-hidden">
+              <table className="w-full text-left border-collapse">
+                 <thead>
+                    <tr className="bg-neutral-50 dark:bg-black/20 text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+                       <th className="p-4 border-b border-neutral-100 dark:border-neutral-800">Sender</th>
+                       <th className="p-4 border-b border-neutral-100 dark:border-neutral-800 text-right">Date</th>
+                    </tr>
+                 </thead>
+                 <tbody>
+                    {Array.isArray(messages) && messages.slice(0, 5).map(m => (
+                      <tr key={m.id} className="group hover:bg-neutral-50 dark:hover:bg-neutral-900/50 transition-colors">
+                        <td className="p-4">
+                           <div className="flex flex-col">
+                              <span className="text-xs font-bold">{m.name}</span>
+                              <span className="text-[10px] text-neutral-400">{m.email}</span>
+                           </div>
+                        </td>
+                        <td className="p-4 text-right text-[10px] text-neutral-400 font-mono">
+                           {new Date(m.createdAt).toLocaleDateString()}
+                        </td>
+                      </tr>
+                    ))}
+                 </tbody>
+              </table>
+           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/pages/admin/EditProfile.tsx">
+import { useState, useEffect, FormEvent } from 'react';
+import { getProfile } from '@/src/services/api';
+import { IProfile } from '@/src/types';
+import { Save, User, MapPin, Linkedin, Github, Phone, Briefcase, Globe, Send, MessageSquare, Lock, AlertCircle } from 'lucide-react';
+
+import { useToast } from '@/src/components/ui/Toast';
+
+export default function EditProfile() {
+  const [profile, setProfile] = useState<IProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const { toast } = useToast();
+
+  useEffect(() => {
+    getProfile().then(p => {
+      setProfile({
+        ...p,
+        username: p.username || 'admin',
+        password: p.password || '********'
+      });
+      setLoading(false);
+    });
+  }, []);
+
+  const handleSaveSection = (section: string) => {
+    if (section === 'Credentials') {
+      if (!currentPassword) {
+        toast('Confirm your identity with current password', 'error');
+        return;
+      }
+      // Mock validation matching Login.tsx credentials
+      if (currentPassword !== 'admin123') {
+        toast('Authentication failed: Invalid current secret key', 'error');
+        return;
+      }
+      setCurrentPassword('');
+    }
+    toast(`${section} updated successfully`);
+  };
+
+  if (loading || !profile) return null;
+
+  return (
+    <div className="max-w-4xl mx-auto space-y-8 pb-12" id="edit-profile">
+      <div className="space-y-1">
+        <h1 className="text-xl font-black uppercase text-neutral-900 dark:text-neutral-100 tracking-tight">Identity Configuration</h1>
+        <p className="text-[10px] text-neutral-500 font-bold uppercase tracking-widest">Update global metadata and public credentials independently.</p>
+      </div>
+
+      <div className="space-y-12">
+        {/* Core Identity */}
+        <section className="bg-white dark:bg-neutral-900 p-8 rounded-md border border-neutral-100 dark:border-neutral-800 space-y-8">
+          <div className="flex items-center justify-between">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">Core Identity</h3>
+            <button 
+              onClick={() => handleSaveSection('Core Identity')}
+              className="px-6 py-2.5 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded-md flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer"
+            >
+              <Save className="w-3.5 h-3.5" /> Sync Identity
+            </button>
+          </div>
+          
+          <div className="flex flex-col md:flex-row md:items-center gap-6">
+            <div className="w-24 h-24 shrink-0 rounded-md overflow-hidden bg-neutral-100 dark:bg-black border border-neutral-200 dark:border-neutral-800">
+              <img src={profile.profilePic} alt="Current" className="w-full h-full object-cover" />
+            </div>
+            <div className="space-y-2 flex-1">
+              <label className="text-[10px] font-bold uppercase text-neutral-400">Profile Image URL</label>
+              <input
+                type="text"
+                value={profile.profilePic}
+                onChange={(e) => setProfile({ ...profile, profilePic: e.target.value })}
+                className="w-full px-4 py-2 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold uppercase text-neutral-400 flex items-center gap-1.5"><User className="w-3 h-3"/> Full Name</label>
+              <input
+                type="text"
+                value={profile.fullName}
+                onChange={(e) => setProfile({ ...profile, fullName: e.target.value })}
+                className="w-full px-4 py-2 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold uppercase text-neutral-400 flex items-center gap-1.5"><Briefcase className="w-3 h-3"/> Profession</label>
+              <input
+                type="text"
+                value={profile.profession}
+                onChange={(e) => setProfile({ ...profile, profession: e.target.value })}
+                className="w-full px-4 py-2 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold uppercase text-neutral-400 flex items-center gap-1.5"><Briefcase className="w-3 h-3"/> Years of Experience</label>
+              <input
+                type="text"
+                value={profile.yearsOfExperience}
+                onChange={(e) => setProfile({ ...profile, yearsOfExperience: e.target.value })}
+                className="w-full px-4 py-2 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold uppercase text-neutral-400 flex items-center gap-1.5"><MapPin className="w-3 h-3"/> Location</label>
+              <input
+                type="text"
+                value={profile.address}
+                onChange={(e) => setProfile({ ...profile, address: e.target.value })}
+                className="w-full px-4 py-2 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Narratives */}
+        <section className="bg-white dark:bg-neutral-900 p-8 rounded-md border border-neutral-100 dark:border-neutral-800 space-y-8">
+          <div className="flex items-center justify-between">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">Narratives</h3>
+            <button 
+              onClick={() => handleSaveSection('Narratives')}
+              className="px-6 py-2.5 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded-md flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer"
+            >
+              <Save className="w-3.5 h-3.5" /> Save Bios
+            </button>
+          </div>
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold uppercase text-neutral-400">Short Bio</label>
+              <textarea
+                rows={3}
+                value={profile.bio}
+                onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
+                className="w-full px-4 py-2 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden resize-none"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold uppercase text-neutral-400">Detailed Description</label>
+              <textarea
+                rows={5}
+                value={profile.description}
+                onChange={(e) => setProfile({ ...profile, description: e.target.value })}
+                className="w-full px-4 py-2 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden resize-none"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Connections */}
+        <section className="bg-white dark:bg-neutral-900 p-8 rounded-md border border-neutral-100 dark:border-neutral-800 space-y-8">
+          <div className="flex items-center justify-between">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">Connections</h3>
+            <button 
+              onClick={() => handleSaveSection('Social Connections')}
+              className="px-6 py-2.5 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded-md flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer"
+            >
+              <Save className="w-3.5 h-3.5" /> Sync Socials
+            </button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold uppercase text-neutral-400 flex items-center gap-1.5"><Phone className="w-3 h-3"/> Phone Number</label>
+              <input
+                type="text"
+                value={profile.phone}
+                onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+                className="w-full px-4 py-2 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold uppercase text-neutral-400 flex items-center gap-1.5"><Globe className="w-3 h-3"/> Website URL</label>
+              <input
+                type="url"
+                value={profile.website}
+                onChange={(e) => setProfile({ ...profile, website: e.target.value })}
+                className="w-full px-4 py-2 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold uppercase text-neutral-400 flex items-center gap-1.5"><Linkedin className="w-3 h-3"/> LinkedIn URL</label>
+              <input
+                type="url"
+                value={profile.linkedin}
+                onChange={(e) => setProfile({ ...profile, linkedin: e.target.value })}
+                className="w-full px-4 py-2 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold uppercase text-neutral-400 flex items-center gap-1.5"><Github className="w-3 h-3"/> GitHub URL</label>
+              <input
+                type="url"
+                value={profile.github}
+                onChange={(e) => setProfile({ ...profile, github: e.target.value })}
+                className="w-full px-4 py-2 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Credentials */}
+        <section className="bg-white dark:bg-neutral-900 p-8 rounded-md border border-red-100 dark:border-red-900/30 space-y-8 relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+             <Lock className="w-16 h-16" />
+          </div>
+          
+          <div className="flex items-center justify-between relative z-10">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-red-500">Security Credentials</h3>
+            <button 
+              onClick={() => handleSaveSection('Credentials')}
+              className="px-6 py-2.5 bg-red-500 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-md flex items-center gap-2 hover:bg-red-600 transition-all active:scale-95 cursor-pointer"
+            >
+              <Lock className="w-3.5 h-3.5" /> Force Update
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold uppercase text-neutral-400 flex items-center gap-1.5"><User className="w-3 h-3"/> Target Username</label>
+                <input
+                  type="text"
+                  value={profile.username}
+                  onChange={(e) => setProfile({ ...profile, username: e.target.value })}
+                  className="w-full px-4 py-2.5 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold uppercase text-neutral-400 flex items-center gap-1.5"><Lock className="w-3 h-3"/> New Passcode</label>
+                <input
+                  type="password"
+                  value={profile.password}
+                  onChange={(e) => setProfile({ ...profile, password: e.target.value })}
+                  className="w-full px-4 py-2.5 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+                />
+              </div>
+            </div>
+
+            <div className="bg-red-50 dark:bg-red-950/20 p-6 rounded-md border border-red-100 dark:border-red-900/40 space-y-4">
+              <div className="space-y-1">
+                <label className="text-[10px] font-black uppercase text-red-600 dark:text-red-400 flex items-center gap-2">
+                  <AlertCircle className="w-3 h-3" /> Integrity Check
+                </label>
+                <p className="text-[9px] text-red-500/70 font-bold uppercase tracking-tight">System requires current secret to commit changes.</p>
+              </div>
+              <input
+                type="password"
+                placeholder="Current Secret Key"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                className="w-full px-4 py-3 text-xs font-bold bg-white dark:bg-black border border-red-200 dark:border-red-800 rounded-md focus:ring-1 focus:ring-red-500 outline-hidden tracking-widest"
+              />
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/pages/admin/Login.tsx">
+import { useState, FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Shield, Eye, EyeOff, Lock } from 'lucide-react';
+import { useAuth } from '@/src/contexts/AuthContext';
+import { useToast } from '@/src/components/ui/Toast';
+
+export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const { toast } = useToast();
+
+  const handleLogin = (e: FormEvent) => {
+    e.preventDefault();
+    // Simple mock auth for preview
+    if (email === 'admin@portfolio.com' && password === 'admin123') {
+      login({ email, name: 'Admin' });
+      toast('Login successful', 'success');
+      navigate('/admin/dashboard');
+    } else {
+      toast('Invalid credentials. Use admin@portfolio.com / admin123', 'error');
+    }
+  };
+
+  return (
+    <div className="min-h-[70vh] flex items-center justify-center" id="login-page">
+      <div className="w-full max-w-sm space-y-8 bg-white dark:bg-neutral-900 p-8 rounded-md border border-neutral-100 dark:border-neutral-800">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <div className="w-12 h-12 rounded-md bg-primary flex items-center justify-center text-white">
+            <Shield className="w-6 h-6" />
+          </div>
+          <div className="space-y-1">
+            <h1 className="text-xl font-black text-neutral-900 dark:text-neutral-100 uppercase tracking-tighter">Admin Portal</h1>
+            <p className="text-xs text-neutral-500">Secure entry for system administrators only.</p>
+          </div>
+        </div>
+
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div className="space-y-2">
+            <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Identity</label>
+            <input
+              required
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2.5 text-xs bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:outline-hidden focus:ring-2 focus:ring-primary"
+              placeholder="admin@portfolio.com"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Cipher</label>
+            <div className="relative">
+              <input
+                required
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2.5 text-xs bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:outline-hidden focus:ring-2 focus:ring-primary"
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-neutral-400 hover:text-primary cursor-pointer"
+              >
+                {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+              </button>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-3 bg-primary text-white rounded-md transition-all flex items-center justify-center gap-2 cursor-pointer text-sm font-medium"
+          >
+            Authorize Access <Lock className="w-3.5 h-3.5" />
+          </button>
+        </form>
+
+        <p className="text-[10px] text-center text-neutral-500 font-mono">
+          Default: admin@portfolio.com / admin123
+        </p>
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/pages/admin/ManageProjects.tsx">
+import { useState, useEffect } from 'react';
+import { getProjects, deleteProject, createProject, updateProject } from '@/src/services/api';
+import { IProject } from '@/src/types';
+import { Plus, Trash2, Edit3, Save, X, Search, ExternalLink, Globe, LayoutGrid, Link, Info } from 'lucide-react';
+import { cn } from '@/src/lib/utils';
+import { motion, AnimatePresence } from 'motion/react';
+import Modal from '@/src/components/ui/Modal';
+
+import { useToast } from '@/src/components/ui/Toast';
+import { useConfirm } from '@/src/components/ui/ConfirmDialog';
+
+export default function ManageProjects() {
+  const [projects, setProjects] = useState<IProject[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState<Partial<IProject> | null>(null);
+  const [featuresStr, setFeaturesStr] = useState('');
+  const [techStackStr, setTechStackStr] = useState('');
+  const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+  const { confirm } = useConfirm();
+
+  useEffect(() => {
+    fetchProjects();
+  }, [search]);
+
+  const fetchProjects = async () => {
+    setLoading(true);
+    try {
+      const data = await getProjects(search);
+      setProjects(data);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOpenAddModal = () => {
+    setEditingProject({
+      title: '',
+      description: '',
+      techStack: [],
+      status: 'In Progress',
+      githubLink: '',
+      liveLink: '',
+      problem: '',
+      solution: '',
+      features: []
+    });
+    setFeaturesStr('');
+    setTechStackStr('');
+    setIsModalOpen(true);
+  };
+
+  const handleOpenEditModal = (project: IProject) => {
+    setEditingProject({ ...project });
+    setFeaturesStr(project.features?.join('\n') || '');
+    setTechStackStr(project.techStack?.join(', ') || '');
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = async (id: string) => {
+    if (await confirm({ title: 'Delete Project', message: 'Are you sure you want to delete this project permanently?', confirmTitle: 'Destroy Project' })) {
+      try {
+        await deleteProject(id);
+        setProjects(projects.filter(p => p.id !== id));
+        toast('Project destroyed from database', 'error');
+      } catch (error) {
+        toast('Failed to delete project', 'error');
+      }
+    }
+  };
+
+  const handleSave = async () => {
+    if (!editingProject?.title) {
+      toast('Title is required', 'error');
+      return;
+    }
+
+    const payload = {
+      ...editingProject,
+      features: featuresStr.split('\n').filter(Boolean),
+      techStack: techStackStr.split(',').map(s => s.trim()).filter(Boolean)
+    };
+
+    try {
+      if (editingProject.id) {
+        // Update existing
+        await updateProject(editingProject.id, payload);
+        setProjects(projects.map(p => p.id === editingProject.id ? payload as IProject : p));
+        toast('Project metadata synchronized');
+      } else {
+        // Create new
+        const savedProject = await createProject(payload);
+        setProjects([savedProject, ...projects]);
+        toast('Project initialized successfully');
+      }
+      setIsModalOpen(false);
+    } catch (error) {
+      toast('Failed to save project', 'error');
+    }
+  };
+
+  const filteredProjects = Array.isArray(projects) ? projects : [];
+
+  return (
+    <div className="space-y-8" id="manage-projects">
+      {/* Header section with consistent styling */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4" id="manage-header">
+        <div className="space-y-1">
+          <h1 className="text-xl font-black uppercase text-neutral-900 dark:text-neutral-100 tracking-tight">Project Lifecycle</h1>
+          <p className="text-[10px] text-neutral-500 font-bold uppercase tracking-widest">Database operations for engineering portfolio content.</p>
+        </div>
+        <button 
+          onClick={handleOpenAddModal}
+          className="px-6 py-2.5 bg-primary text-white rounded-md flex items-center gap-2 transition-all active:scale-95 cursor-pointer text-sm font-medium"
+        >
+          <Plus className="w-4 h-4" /> Initialize New Project
+        </button>
+      </div>
+
+      {/* Search section with consistent styling */}
+      <div className="relative max-w-md group">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 group-focus-within:text-primary transition-colors" />
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Query database for projects..."
+          className="w-full pl-12 pr-4 py-3 text-xs font-bold bg-white dark:bg-[#171717] border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+        />
+      </div>
+
+      {/* Grid section instead of Table */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredProjects.map(p => (
+          <div key={p.id} className="bg-white dark:bg-[#171717] border border-neutral-100 dark:border-neutral-800 rounded-md p-6 space-y-4 hover:border-primary/30 transition-all flex flex-col justify-between">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-[9px] font-mono text-neutral-400">#PRJ-{p.id.padStart(4, '0')}</span>
+                <div className="flex items-center gap-2">
+                   <div className={cn(
+                     "w-1.5 h-1.5 rounded-full",
+                     p.status === 'Completed' ? "bg-emerald-500" : "bg-blue-500"
+                   )} />
+                   <span className={cn(
+                     "text-[9px] font-black uppercase tracking-tighter",
+                     p.status === 'Completed' ? "text-emerald-500" : "text-blue-500"
+                   )}>
+                     {p.status}
+                   </span>
+                </div>
+              </div>
+              
+              <div className="space-y-1">
+                <h3 className="text-xs font-black text-neutral-900 dark:text-neutral-100 uppercase tracking-tight line-clamp-1">{p.title}</h3>
+                <p className="text-[10px] text-neutral-500 leading-relaxed line-clamp-2">{p.description}</p>
+              </div>
+
+              <div className="flex flex-wrap gap-1 pt-2">
+                {p.techStack.map((t, idx) => (
+                  <span key={`${t}-${idx}`} className="text-[8px] font-black bg-neutral-100 dark:bg-neutral-800 text-neutral-500 px-2 py-0.5 rounded-md uppercase tracking-tighter">{t}</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-6 border-t border-neutral-50 dark:border-neutral-800/50 mt-auto">
+              <div className="flex items-center gap-1">
+                 <button onClick={() => handleOpenEditModal(p)} className="p-2 text-neutral-400 hover:text-primary hover:bg-primary/10 rounded-md transition-all cursor-pointer">
+                    <Edit3 className="w-4 h-4" />
+                 </button>
+                 <button onClick={() => handleDelete(p.id)} className="p-2 text-neutral-400 hover:text-red-500 hover:bg-red-500/10 rounded-md transition-all cursor-pointer">
+                    <Trash2 className="w-4 h-4" />
+                 </button>
+              </div>
+              <a href={p.githubLink} target="_blank" rel="noopener noreferrer" className="p-2 text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer text-sm font-medium">
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Editor Modal */}
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        title={editingProject?.id ? "Project Metadata Refinement" : "New Project Initialization"}
+      >
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-[10px] font-black uppercase text-neutral-400 flex items-center gap-1.5"><LayoutGrid className="w-3 h-3" /> Project Architecture Title</label>
+              <input
+                type="text"
+                value={editingProject?.title || ''}
+                onChange={(e) => setEditingProject({ ...editingProject!, title: e.target.value })}
+                className="w-full px-4 py-2.5 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+                placeholder="Ex: Distributed Database Engine"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-black uppercase text-neutral-400 flex items-center gap-1.5"><Info className="w-3 h-3" /> System Status</label>
+              <select
+                value={editingProject?.status || 'In Progress'}
+                onChange={(e) => setEditingProject({ ...editingProject!, status: e.target.value as any })}
+                className="w-full px-4 py-2.5 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+              >
+                <option value="In Progress">Engineering In Progress</option>
+                <option value="Completed">System Operational</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-[10px] font-black uppercase text-neutral-400 flex items-center gap-1.5"><Info className="w-3 h-3" /> Project Narrative</label>
+              <textarea
+                rows={3}
+                value={editingProject?.description || ''}
+                onChange={(e) => setEditingProject({ ...editingProject!, description: e.target.value })}
+                className="w-full px-4 py-2.5 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden resize-none"
+                placeholder="High-level technical overview..."
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+               <div className="space-y-2">
+                 <label className="text-[10px] font-black uppercase text-neutral-400 flex items-center gap-1.5">Problem Statement</label>
+                 <textarea
+                   rows={2}
+                   value={editingProject?.problem || ''}
+                   onChange={(e) => setEditingProject({ ...editingProject!, problem: e.target.value })}
+                   className="w-full px-4 py-2.5 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden resize-none"
+                   placeholder="Describe what issue this project solves..."
+                 />
+               </div>
+               <div className="space-y-2">
+                 <label className="text-[10px] font-black uppercase text-neutral-400 flex items-center gap-1.5">Technical Solution</label>
+                 <textarea
+                   rows={2}
+                   value={editingProject?.solution || ''}
+                   onChange={(e) => setEditingProject({ ...editingProject!, solution: e.target.value })}
+                   className="w-full px-4 py-2.5 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden resize-none"
+                   placeholder="Describe how it was solved..."
+                 />
+               </div>
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-black uppercase text-neutral-400 flex items-center gap-1.5">Key Features (Line separated)</label>
+              <textarea
+                rows={3}
+                value={featuresStr}
+                onChange={(e) => setFeaturesStr(e.target.value)}
+                className="w-full px-4 py-2.5 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden resize-none"
+                placeholder="Feature 1&#10;Feature 2&#10;Feature 3"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-[10px] font-black uppercase text-neutral-400 flex items-center gap-1.5"><Link className="w-3 h-3 cursor-pointer" /> Tech Stack (Comma Separated)</label>
+            <input
+              type="text"
+              value={techStackStr}
+              onChange={(e) => setTechStackStr(e.target.value)}
+              className="w-full px-4 py-2.5 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+              placeholder="React, Node.js, TypeScript..."
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label className="text-[10px] font-black uppercase text-neutral-400 flex items-center gap-1.5"><Globe className="w-3 h-3" /> Live Demo Link</label>
+              <input
+                type="text"
+                value={editingProject?.liveLink || ''}
+                onChange={(e) => setEditingProject({ ...editingProject!, liveLink: e.target.value })}
+                className="w-full px-4 py-2.5 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+                placeholder="https://..."
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-black uppercase text-neutral-400 flex items-center gap-1.5"><Link className="w-3 h-3 cursor-pointer" /> Source Code Repository</label>
+              <input
+                type="text"
+                value={editingProject?.githubLink || ''}
+                onChange={(e) => setEditingProject({ ...editingProject!, githubLink: e.target.value })}
+                className="w-full px-4 py-2.5 text-xs font-bold bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+                placeholder="https://github.com/..."
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-3 pt-4">
+            <button 
+              onClick={() => setIsModalOpen(false)}
+              className="px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 hover:text-neutral-600 transition-colors cursor-pointer"
+            >
+              Cancel
+            </button>
+            <button 
+              onClick={handleSave}
+              className="px-8 py-2.5 bg-primary text-white rounded-md transition-all active:scale-95 flex items-center gap-2 cursor-pointer text-sm font-medium"
+            >
+              <Save className="w-4 h-4" /> Commit Changes
+            </button>
+          </div>
+        </div>
+      </Modal>
+    </div>
+  );
+}
+</file>
+
+<file path="src/pages/admin/ManageTechStack.tsx">
+import { useState, useEffect } from 'react';
+import { Plus, Trash2, Edit3, Save, X, ImageIcon, Globe, Search } from 'lucide-react';
+import { getTechLogos, MOCK_TECH_LOGOS } from '@/src/services/api';
+import { ITechLogo } from '@/src/types';
+import { cn } from '@/src/lib/utils';
+import { motion, AnimatePresence } from 'motion/react';
+
+import { useToast } from '@/src/components/ui/Toast';
+import { useConfirm } from '@/src/components/ui/ConfirmDialog';
+
+export default function ManageTechStack() {
+  const [logos, setLogos] = useState<ITechLogo[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [tempLogo, setTempLogo] = useState<Partial<ITechLogo>>({});
+  const [search, setSearch] = useState('');
+  const { toast } = useToast();
+  const { confirm } = useConfirm();
+
+  useEffect(() => {
+    getTechLogos(search).then(setLogos);
+  }, [search]);
+
+  const handleCreate = () => {
+    const newLogo: ITechLogo = {
+      id: Math.random().toString(36).substr(2, 9),
+      name: 'New Tech',
+      logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg'
+    };
+    setLogos([...logos, newLogo]);
+    setEditingId(newLogo.id);
+    setTempLogo(newLogo);
+  };
+
+  const handleEdit = (logo: ITechLogo) => {
+    setEditingId(logo.id);
+    setTempLogo(logo);
+  };
+
+  const handleSave = () => {
+    if (!tempLogo.name || !tempLogo.logoUrl) {
+      toast('Please fill all fields', 'error');
+      return;
+    }
+    setLogos(logos.map(l => l.id === editingId ? { ...l, ...tempLogo } as ITechLogo : l));
+    setEditingId(null);
+    toast('Technology updated successfully');
+  };
+
+  const handleDelete = async (id: string) => {
+    if (await confirm({ title: 'Remove Tech Stack', message: 'Are you sure you want to remove this technology permanently?', confirmTitle: 'Remove' })) {
+      setLogos(logos.filter(l => l.id !== id));
+      toast('Technology removed', 'info');
+    }
+  };
+
+  return (
+    <div className="max-w-5xl mx-auto space-y-8" id="manage-tech-stack">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="space-y-1">
+              <h1 className="text-xl font-black uppercase text-neutral-900 dark:text-neutral-100 tracking-tight">Tech Stack Repository</h1>
+          <p className="text-xs text-neutral-500">Curate the technologies showcased on your homepage.</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-400" />
+            <input 
+              type="text"
+              placeholder="Search database..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-9 pr-4 py-2 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-md text-xs focus:ring-1 focus:ring-primary outline-hidden"
+            />
+          </div>
+          <button 
+            onClick={handleCreate}
+            className="px-6 py-2.5 bg-primary text-white rounded-md flex items-center gap-2 transition-all active:scale-95 shrink-0 cursor-pointer text-sm font-medium"
+          >
+            <Plus className="w-3.5 h-3.5" /> Initialize New
+          </button>
+        </div>
+      </div>
+
+      <div className="max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-4">
+          <AnimatePresence>
+            {logos.map((logo) => (
+            <motion.div
+              layout
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              key={logo.id}
+              className="group bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-md p-6 relative overflow-hidden"
+            >
+              {editingId === logo.id ? (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-md bg-neutral-100 dark:bg-black border border-neutral-100 dark:border-neutral-800 flex items-center justify-center p-2">
+                       <img src={tempLogo.logoUrl} alt="Preview" className="w-full h-full object-contain" />
+                    </div>
+                    <div className="flex-1">
+                       <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Logo Preview</p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div className="space-y-1">
+                       <label className="text-[10px] font-bold uppercase text-neutral-400">Tech Name</label>
+                       <input 
+                         type="text"
+                         value={tempLogo.name}
+                         onChange={(e) => setTempLogo({ ...tempLogo, name: e.target.value })}
+                         className="w-full px-3 py-2 text-xs bg-neutral-50 dark:bg-black border border-neutral-100 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+                       />
+                    </div>
+                    <div className="space-y-1">
+                       <label className="text-[10px] font-bold uppercase text-neutral-400">Logo URL (SVG preferred)</label>
+                       <input 
+                         type="text"
+                         value={tempLogo.logoUrl}
+                         onChange={(e) => setTempLogo({ ...tempLogo, logoUrl: e.target.value })}
+                         className="w-full px-3 py-2 text-xs bg-neutral-50 dark:bg-black border border-neutral-100 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+                       />
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2 pt-2">
+                    <button 
+                      onClick={handleSave}
+                      className="flex-1 py-2 bg-primary text-white rounded-md flex items-center justify-center gap-1.5 cursor-pointer text-sm font-medium"
+                    >
+                      <Save className="w-3 h-3" /> Save
+                    </button>
+                    <button 
+                      onClick={() => setEditingId(null)}
+                      className="px-3 py-2 bg-neutral-100 dark:bg-neutral-800 text-[10px] font-black uppercase tracking-widest rounded-md cursor-pointer"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 rounded-md bg-neutral-50 dark:bg-black border border-neutral-100 dark:border-neutral-800 p-3 group-hover:scale-110 transition-transform">
+                      <img src={logo.logoUrl} alt={logo.name} className="w-full h-full object-contain" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-neutral-900 dark:text-white uppercase tracking-tight">{logo.name}</h4>
+                      <p className="text-[10px] text-neutral-400 font-mono truncate max-w-[120px]">{logo.logoUrl}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button 
+                      onClick={() => handleEdit(logo)}
+                      className="p-1.5 text-neutral-400 hover:text-primary transition-colors cursor-pointer"
+                    >
+                      <Edit3 className="w-3.5 h-3.5" />
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(logo.id)}
+                      className="p-1.5 text-neutral-400 hover:text-red-500 transition-colors cursor-pointer"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </>
+              )}
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
+    </div>
+
+      <div className="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/50 p-4 rounded-md flex items-start gap-3">
+        <Globe className="w-4 h-4 text-emerald-500 mt-0.5" />
+        <div className="space-y-1">
+           <h5 className="text-[10px] font-bold uppercase text-emerald-700 dark:text-emerald-400">Pro Tip</h5>
+           <p className="text-xs text-emerald-600/80 dark:text-emerald-500/80">Use high-quality SVG links from <a href="https://devicon.dev" target="_blank" className="underline cursor-pointer">Devicon</a> for best results across all themes.</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/pages/admin/ViewMessages.tsx">
+import { useState, useEffect, useMemo } from 'react';
+import { getMessages } from '@/src/services/api';
+import { IMessage } from '@/src/types';
+import { 
+  Trash2, 
+  Reply, 
+  Mail, 
+  User, 
+  Clock, 
+  Search, 
+  Filter, 
+  ChevronDown, 
+  CheckCircle2, 
+  AlertCircle,
+  Eye,
+  EyeOff,
+  CornerDownRight,
+  Send,
+  X,
+  Calendar
+} from 'lucide-react';
+import { cn } from '@/src/lib/utils';
+import { motion, AnimatePresence } from 'motion/react';
+
+import { useToast } from '@/src/components/ui/Toast';
+
+export default function ViewMessages() {
+  const [messages, setMessages] = useState<IMessage[]>([]);
+  const [search, setSearch] = useState('');
+  const [filterReplied, setFilterReplied] = useState<'all' | 'replied' | 'unreplied'>('all');
+  const [filterRead, setFilterRead] = useState<'all' | 'read' | 'unread'>('unread');
+  const [filterIgnored, setFilterIgnored] = useState<boolean>(false);
+  const [dateRange, setDateRange] = useState({ start: '', end: '' });
+  const [replyingTo, setReplyingTo] = useState<string | null>(null);
+  const [replyText, setReplyText] = useState('');
+  const { toast } = useToast();
+
+  useEffect(() => {
+    getMessages(search).then(msgs => {
+      // Add missing fields for mock data if necessary
+      const enhancedMsgs = msgs.map(m => ({
+        ...m,
+        isRead: m.isRead ?? false,
+        isIgnored: m.isIgnored ?? false
+      }));
+      setMessages(enhancedMsgs);
+    });
+  }, [search]);
+
+  const filteredMessages = useMemo(() => {
+    return messages
+      .filter(m => {
+        const matchesReplied = 
+          filterReplied === 'all' ? true : 
+          filterReplied === 'replied' ? !!m.repliedAt : !m.repliedAt;
+
+        const matchesRead = 
+          filterRead === 'all' ? true : 
+          filterRead === 'read' ? m.isRead : !m.isRead;
+
+        const matchesIgnored = filterIgnored ? m.isIgnored : !m.isIgnored;
+
+        // Date matching logic - using ISO date strings for comparison to avoid TZ issues
+        const messageDateStr = m.createdAt.split('T')[0];
+        const matchesDate = 
+          (!dateRange.start || messageDateStr >= dateRange.start) &&
+          (!dateRange.end || messageDateStr <= dateRange.end);
+
+        return matchesReplied && matchesRead && matchesIgnored && matchesDate;
+      })
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }, [messages, filterReplied, filterRead, filterIgnored, dateRange]);
+
+  const handleDelete = (id: string) => {
+    setMessages(messages.filter(m => m.id !== id));
+    toast('Message removed from local view', 'info');
+  };
+
+  const markAsRead = (id: string) => {
+    setMessages(messages.map(m => m.id === id ? { ...m, isRead: true } : m));
+    toast('Message marked as read');
+  };
+
+  const toggleIgnore = (id: string) => {
+    const message = messages.find(m => m.id === id);
+    setMessages(messages.map(m => m.id === id ? { ...m, isIgnored: !m.isIgnored } : m));
+    toast(message?.isIgnored ? 'Message restored' : 'Message ignored', 'info');
+  };
+
+  const handleReply = (id: string) => {
+    setMessages(messages.map(m => m.id === id ? { 
+      ...m, 
+      repliedAt: new Date().toISOString(), 
+      replyText: replyText,
+      isRead: true 
+    } : m));
+    setReplyingTo(null);
+    setReplyText('');
+    toast('Reply sent successfully');
+  };
+
+  return (
+    <div className="h-full flex flex-col gap-6" id="view-messages-container">
+      {/* Header & Stats */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <h1 className="text-xl font-black uppercase text-neutral-900 dark:text-neutral-100">Communications Hub</h1>
+          <p className="text-[10px] text-neutral-500 font-bold uppercase tracking-widest">Manage, filter and respond to inquiries.</p>
+        </div>
+        <div className="flex gap-2">
+           <div className="px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-md flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[9px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">
+                {messages.filter(m => !m.isRead).length} Incoming Inquiries
+              </span>
+           </div>
+        </div>
+      </div>
+
+      {/* Advanced Filters */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-5 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-md">
+        <div className="lg:col-span-1 space-y-1">
+          <label className="text-[9px] font-black uppercase tracking-tighter text-neutral-400">Search Workspace</label>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-400" />
+            <input 
+              type="text"
+              placeholder="Query..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-9 pr-4 py-2.5 text-[11px] font-bold bg-neutral-50 dark:bg-black border border-neutral-100 dark:border-neutral-800 rounded-md focus:ring-1 focus:ring-primary outline-hidden"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-1">
+          <label className="text-[9px] font-black uppercase tracking-tighter text-neutral-400">Status Matrix</label>
+          <div className="flex gap-2">
+            <select 
+              value={filterRead}
+              onChange={(e) => setFilterRead(e.target.value as any)}
+              className="flex-1 px-3 py-2.5 text-[11px] font-bold bg-neutral-50 dark:bg-black border border-neutral-100 dark:border-neutral-800 rounded-md outline-hidden"
+            >
+              <option value="unread">Unread Only</option>
+              <option value="read">Archived (Read)</option>
+              <option value="all">Full History</option>
+            </select>
+            <select 
+              value={filterReplied}
+              onChange={(e) => setFilterReplied(e.target.value as any)}
+              className="flex-1 px-3 py-2.5 text-[11px] font-bold bg-neutral-50 dark:bg-black border border-neutral-100 dark:border-neutral-800 rounded-md outline-hidden"
+            >
+              <option value="all">Any Status</option>
+              <option value="replied">Processed</option>
+              <option value="unreplied">Pending Action</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="space-y-1 text-center">
+           <label className="text-[9px] font-black uppercase tracking-tighter text-neutral-400">Chronological Control</label>
+           <div className="flex items-center gap-2">
+              <input 
+                type="date"
+                value={dateRange.start}
+                onChange={(e) => setDateRange({...dateRange, start: e.target.value})}
+                className="w-full px-2 py-2 text-[10px] font-bold bg-neutral-50 dark:bg-black border border-neutral-100 dark:border-neutral-800 rounded-md outline-hidden"
+              />
+              <span className="text-neutral-300">/</span>
+              <input 
+                type="date"
+                value={dateRange.end}
+                onChange={(e) => setDateRange({...dateRange, end: e.target.value})}
+                className="w-full px-2 py-2 text-[10px] font-bold bg-neutral-50 dark:bg-black border border-neutral-100 dark:border-neutral-800 rounded-md outline-hidden"
+              />
+           </div>
+        </div>
+
+        <div className="flex items-end gap-2">
+          <button 
+            onClick={() => setFilterIgnored(!filterIgnored)}
+            className={cn(
+              "flex-1 py-2.5 rounded-md text-[9px] font-black uppercase tracking-widest border transition-all flex items-center justify-center gap-2",
+              filterIgnored 
+                ? "bg-amber-50 border-amber-200 text-amber-600" 
+                : "bg-neutral-50 dark:bg-black border-neutral-100 dark:border-neutral-800 text-neutral-400"
+            )}
+          >
+            {filterIgnored ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+            {filterIgnored ? "Viewing Ignored" : "Ignored Inbox"}
+          </button>
+          <button 
+            onClick={() => {
+              setSearch('');
+              setFilterRead('unread');
+              setFilterReplied('all');
+              setFilterIgnored(false);
+              setDateRange({ start: '', end: '' });
+              toast('Filters Resetted', 'info');
+            }}
+            className="p-3 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md text-neutral-500 hover:text-primary transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Messages List Area */}
+      <div 
+        className="flex-1 overflow-y-auto pr-4 space-y-4 custom-scrollbar" 
+        style={{ scrollbarGutter: 'stable' }}
+        id="messages-scroll-area"
+      >
+        <AnimatePresence mode="popLayout">
+          {filteredMessages.length > 0 ? filteredMessages.map((m) => (
+            <motion.div
+              layout
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              key={m.id}
+              className={cn(
+                "group relative bg-white dark:bg-neutral-900 p-6 rounded-md border transition-all duration-300",
+                !m.isRead ? "border-primary/30 ring-1 ring-primary/5" : "border-neutral-100 dark:border-neutral-800",
+                m.isIgnored && "opacity-60 grayscale bg-neutral-50 dark:bg-neutral-950"
+              )}
+            >
+              <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                <div className="flex gap-4">
+                   <div className={cn(
+                     "w-12 h-12 rounded-md flex items-center justify-center transition-colors",
+                     !m.isRead ? "bg-primary/10 text-primary border border-primary/20" : "bg-neutral-50 dark:bg-black text-neutral-400 border border-neutral-100 dark:border-neutral-800"
+                   )}>
+                      <User className="w-6 h-6" />
+                   </div>
+                   <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-sm font-bold text-neutral-900 dark:text-neutral-100 uppercase tracking-tight">{m.name}</h3>
+                        {!m.isRead && <span className="w-2 h-2 rounded-full bg-primary" />}
+                        {m.repliedAt && <CheckCircle2 className="w-4 h-4 text-emerald-500" title="Replied" />}
+                      </div>
+                      <p className="text-[10px] text-primary font-black uppercase tracking-widest flex items-center gap-1.5 cursor-pointer hover:underline">
+                        <Mail className="w-3 h-3" /> {m.email}
+                      </p>
+                   </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-1.5 text-[9px] font-black uppercase text-neutral-400 tracking-tighter bg-neutral-50 dark:bg-black px-2 py-1 rounded-md border border-neutral-100 dark:border-neutral-800">
+                    <Clock className="w-3 h-3" /> {new Date(m.createdAt).toLocaleString()}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-5 p-5 rounded-md bg-neutral-50 dark:bg-black/40 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed relative border border-neutral-100 dark:border-neutral-800/20">
+                <span className="absolute -top-3 left-3 bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest text-neutral-400">Message Payload</span>
+                {m.message}
+              </div>
+
+              {m.replyText && (
+                <div className="mt-4 pl-6 border-l-2 border-emerald-500/30 space-y-2">
+                   <div className="flex items-center gap-2 text-[9px] font-black text-emerald-500 uppercase tracking-widest">
+                      <CornerDownRight className="w-3 h-3" /> Outreach Sent ( {new Date(m.repliedAt!).toLocaleDateString()} )
+                   </div>
+                   <p className="text-[11px] font-medium text-neutral-500 dark:text-neutral-400">
+                      {m.replyText}
+                   </p>
+                </div>
+              )}
+
+              {replyingTo === m.id && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }} 
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-6 space-y-3"
+                >
+                  <textarea 
+                    autoFocus
+                    placeholder="Draft your professional response..."
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    className="w-full p-4 text-[11px] font-medium bg-neutral-50 dark:bg-black border border-primary/20 rounded-md focus:ring-1 focus:ring-primary outline-hidden min-h-[120px] shadow-inner"
+                  />
+                  <div className="flex justify-end gap-2">
+                    <button 
+                      onClick={() => setReplyingTo(null)}
+                      className="px-4 py-2 text-[10px] font-black uppercase tracking-widest text-neutral-400 hover:text-neutral-600 cursor-pointer"
+                    >
+                      Discard
+                    </button>
+                    <button 
+                      onClick={() => handleReply(m.id)}
+                      disabled={!replyText.trim()}
+                      className="px-6 py-2 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded-md disabled:opacity-50 transition-all cursor-pointer"
+                    >
+                      Dispatch Replay
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              <div className="mt-6 pt-4 border-t border-neutral-100 dark:border-neutral-800/50 flex items-center justify-between">
+                <div className="flex gap-4">
+                   {!m.isRead && (
+                     <button 
+                       onClick={() => markAsRead(m.id)}
+                       className="text-[10px] font-black uppercase tracking-widest text-neutral-400 hover:text-emerald-500 flex items-center gap-2"
+                     >
+                       <Eye className="w-3.5 h-3.5" /> Archive
+                     </button>
+                   )}
+                   <button 
+                     onClick={() => toggleIgnore(m.id)}
+                     className={cn(
+                       "text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-colors",
+                       m.isIgnored ? "text-amber-500" : "text-neutral-400 hover:text-amber-500"
+                     )}
+                   >
+                     {m.isIgnored ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
+                     {m.isIgnored ? "Unignore" : "Ignore"}
+                   </button>
+                </div>
+
+                <div className="flex items-center gap-3">
+                   {!m.repliedAt && !replyingTo && (
+                     <button 
+                       onClick={() => setReplyingTo(m.id)}
+                       className="px-6 py-2.5 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-[10px] font-black uppercase tracking-widest rounded-md hover:scale-105 transition-all flex items-center gap-2 shadow-sm"
+                     >
+                        <Reply className="w-3.5 h-3.5" /> Compose Reply
+                     </button>
+                   )}
+                </div>
+              </div>
+            </motion.div>
+          )) : (
+            <div className="py-32 flex flex-col items-center justify-center text-center space-y-4 bg-white dark:bg-neutral-900 rounded-md border border-dashed border-neutral-200 dark:border-neutral-800">
+               <div className="w-20 h-20 rounded-full bg-neutral-50 dark:bg-black/50 flex items-center justify-center text-neutral-300">
+                 <Mail className="w-10 h-10" />
+               </div>
+               <div className="space-y-1">
+                  <h3 className="text-sm font-black text-neutral-900 dark:text-white uppercase tracking-tight">Zero Inquiries</h3>
+                  <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest max-w-[240px]">The current filtered view is empty.</p>
+               </div>
+               <button 
+                 onClick={() => {
+                   setSearch('');
+                   setFilterRead('unread');
+                   setFilterReplied('all');
+                   setFilterIgnored(false);
+                 }}
+                 className="text-[9px] font-black text-primary uppercase tracking-[0.2em] border border-primary/20 px-4 py-2 rounded-full hover:bg-primary/5 transition-colors cursor-pointer"
+               >
+                 Flush Filters
+               </button>
+            </div>
+          )}
+        </AnimatePresence>
+      </div>
+
+    </div>
+  );
+}
+</file>
+
+<file path="src/pages/public/Contact.tsx">
+import { useState, FormEvent } from 'react';
+import { Send, CheckCircle, Mail, MapPin, Linkedin } from 'lucide-react';
+import { motion } from 'motion/react';
+
+export default function Contact() {
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    setStatus('submitting');
+    // Simulate API call
+    setTimeout(() => {
+      setStatus('success');
+      setForm({ name: '', email: '', message: '' });
+      setTimeout(() => setStatus('idle'), 5000);
+    }, 1500);
+  };
+
+  return (
+    <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 py-8" id="contact-page">
+      <div className="space-y-8">
+        <div className="space-y-4">
+          <h1 className="text-3xl font-black text-neutral-900 dark:text-neutral-100">Get in Touch</h1>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">Have a technical project or inquiry? I'm always open to discussing architectural solutions.</p>
+        </div>
+
+        <div className="space-y-6">
+          <div className="flex gap-4 p-4 rounded-md bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800">
+             <div className="p-2 rounded-md bg-primary/10 text-primary"><Mail className="w-5 h-5" /></div>
+             <div className="space-y-1">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Email</p>
+                <p className="text-xs font-semibold">pawlos@example.com</p>
+             </div>
+          </div>
+          <div className="flex gap-4 p-4 rounded-md bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800">
+             <div className="p-2 rounded-md bg-primary/10 text-primary"><MapPin className="w-5 h-5" /></div>
+             <div className="space-y-1">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Location</p>
+                <p className="text-xs font-semibold">Addis Ababa, Ethiopia</p>
+             </div>
+          </div>
+          <div className="flex gap-4 p-4 rounded-md bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800">
+             <div className="p-2 rounded-md bg-primary/10 text-primary"><Linkedin className="w-5 h-5" /></div>
+             <div className="space-y-1">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">LinkedIn</p>
+                <p className="text-xs font-semibold">linkedin.com/in/pawlosgelgelo</p>
+             </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white dark:bg-neutral-900 p-8 rounded-md border border-neutral-100 dark:border-neutral-800 relative overflow-hidden">
+        {status === 'success' ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="h-full flex flex-col items-center justify-center text-center space-y-4"
+          >
+            <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-500">
+              <CheckCircle className="w-8 h-8" />
+            </div>
+            <div className="space-y-2">
+              <h2 className="text-lg font-bold">Message Sent!</h2>
+              <p className="text-xs text-neutral-500">Thank you for reaching out. I will get back to you shortly.</p>
+            </div>
+          </motion.div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Full Name</label>
+              <input
+                required
+                type="text"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                className="w-full px-4 py-2.5 text-xs bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-900 rounded-md focus:outline-hidden focus:ring-2 focus:ring-primary transition-all"
+                placeholder="John Doe"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Email Address</label>
+              <input
+                required
+                type="email"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                className="w-full px-4 py-2.5 text-xs bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-900 rounded-md focus:outline-hidden focus:ring-2 focus:ring-primary transition-all"
+                placeholder="john@example.com"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Your Message</label>
+              <textarea
+                required
+                rows={4}
+                value={form.message}
+                onChange={(e) => setForm({ ...form, message: e.target.value })}
+                className="w-full px-4 py-2.5 text-xs bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-900 rounded-md focus:outline-hidden focus:ring-2 focus:ring-primary transition-all"
+                placeholder="Tell me about your project..."
+              />
+            </div>
+            <button
+              disabled={status === 'submitting'}
+              type="submit"
+              className="w-full py-3 bg-primary text-white rounded-md disabled:opacity-50 transition-all flex items-center justify-center gap-2 group cursor-pointer text-sm font-medium"
+            >
+              {status === 'submitting' ? 'Transmitting...' : (
+                <>Send Message <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" /></>
+              )}
+            </button>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/pages/public/Home.tsx">
+import { useState, useEffect } from 'react';
+import { getProfile, getTechLogos, MOCK_PROFILE } from '@/src/services/api';
+import { IProfile, ITechLogo } from '@/src/types';
+import { Download, Github, Linkedin, Send, ArrowRight, Smile, Zap, Award, Globe } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { motion } from 'motion/react';
+import { cn } from '@/src/lib/utils';
+
+export default function Home() {
+  const [profile, setProfile] = useState<IProfile>(MOCK_PROFILE);
+  const [techLogos, setTechLogos] = useState<ITechLogo[]>([]);
+
+  useEffect(() => {
+    getProfile().then(setProfile);
+    getTechLogos().then(setTechLogos);
+  }, []);
+
+  return (
+    <div className="flex flex-col gap-24 py-12" id="home-page">
+      {/* Hero Section */}
+      <section className="flex flex-col items-center justify-center py-20 text-center space-y-16" id="hero-section">
+        
+        {/* Name Section */}
+        <div id="name-section" className="space-y-4">
+           <motion.div
+             initial={{ opacity: 0, scale: 0.9 }}
+             animate={{ opacity: 1, scale: 1 }}
+             className="text-[10px] font-black uppercase tracking-[0.5em] text-primary"
+           >
+             Welcome to my portfolio
+           </motion.div>
+           <h1 className="text-5xl md:text-8xl lg:text-9xl font-black text-neutral-950 dark:text-white tracking-tighter" id="profile-name">
+              {profile.fullName}
+           </h1>
+        </div>
+
+        {/* Profession Section */}
+        <div id="profession-section" className="flex items-center justify-center gap-6">
+           <div className="h-px w-8 md:w-16 bg-neutral-200 dark:bg-neutral-800" />
+           <span className="text-xl md:text-4xl font-light text-primary tracking-[0.2em] uppercase italic">
+             {profile.profession}
+           </span>
+           <div className="h-px w-8 md:w-16 bg-neutral-200 dark:bg-neutral-800" />
+        </div>
+
+        <div className="relative group" id="hero-image-container">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="w-56 h-56 md:w-72 md:h-72 rounded-full overflow-hidden border-4 border-white dark:border-neutral-900 relative z-10"
+          >
+            <img
+              src={profile.profilePic}
+              alt={profile.fullName}
+              className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+            />
+          </motion.div>
+          <div className="absolute -inset-6 bg-primary/20 rounded-full blur-3xl -z-0 group-hover:bg-primary/30 transition-colors" />
+        </div>
+
+        {/* Description Section */}
+        <div id="description-section" className="max-w-4xl space-y-8 bg-white dark:bg-neutral-900/60 p-8 md:p-16 rounded-md border border-neutral-100 dark:border-neutral-800">
+           <div className="flex flex-col items-center gap-2">
+              <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-400">Professional Summary</h3>
+              <div className="w-8 h-0.5 bg-primary rounded-full" />
+           </div>
+           <p className="text-2xl md:text-4xl text-neutral-950 dark:text-neutral-100 leading-tight font-black" id="profile-description">
+              {profile.description}
+           </p>
+           <p className="text-base md:text-lg text-neutral-700 dark:text-neutral-300 max-w-2xl mx-auto leading-relaxed" id="profile-bio">
+             {profile.bio}
+           </p>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center gap-6 pt-4" id="hero-actions">
+           <Link
+             to="/projects"
+             className="px-10 py-5 bg-primary text-white rounded-md hover:scale-105 active:scale-95 transition-all flex items-center gap-3 cursor-pointer text-sm font-medium"
+           >
+             Explore Projects <ArrowRight className="w-5 h-5" />
+           </Link>
+           <a
+             href={profile.cvUrl}
+             className="px-10 py-5 border-2 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-all flex items-center gap-3 cursor-pointer text-sm font-medium"
+           >
+             Download Resume <Download className="w-5 h-5" />
+           </a>
+        </div>
+      </section>
+
+      {/* Tech Logos Section */}
+      <section className="space-y-12 overflow-hidden" id="tech-logos-section">
+         <div className="flex flex-col items-center gap-2">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-400">Trusted Tech Stack</h3>
+            <div className="w-8 h-0.5 bg-primary rounded-full" />
+         </div>
+         
+         {techLogos.length > 8 ? (
+           <div className="relative group">
+             <div className="flex animate-marquee group-hover:pause gap-16 whitespace-nowrap">
+               {[...techLogos, ...techLogos].map((tech, i) => (
+                 <div key={`${tech.id}-${i}`} className="flex flex-col items-center gap-3 shrink-0">
+                   <img src={tech.logoUrl} alt={tech.name} className="w-10 h-10 md:w-12 md:h-12 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all cursor-default" />
+                   <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">{tech.name}</span>
+                 </div>
+               ))}
+             </div>
+             {/* Gradient Overlays */}
+             <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-neutral-50 dark:from-black to-transparent pointer-events-none" />
+             <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-neutral-50 dark:from-black to-transparent pointer-events-none" />
+           </div>
+         ) : (
+           <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-60 hover:opacity-100 transition-opacity">
+            {techLogos.map((tech) => (
+               <motion.div
+                 key={tech.id}
+                 whileHover={{ y: -5, scale: 1.1 }}
+                 className="flex flex-col items-center gap-3 group"
+               >
+                  <img src={tech.logoUrl} alt={tech.name} className="w-10 h-10 md:w-12 md:h-12 grayscale group-hover:grayscale-0 transition-all" />
+                  <span className="text-[10px] font-bold text-neutral-400 group-hover:text-primary transition-colors uppercase tracking-widest">{tech.name}</span>
+               </motion.div>
+            ))}
+           </div>
+         )}
+      </section>
+
+      {/* Metrics Section */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-6" id="metrics-section">
+        {[
+          { label: 'Experience', value: profile.yearsOfExperience, icon: Award, color: 'text-amber-500' },
+          { label: 'Built Projects', value: '25+', icon: Zap, color: 'text-blue-500' },
+          { label: 'Service Uptime', value: '100%', icon: Globe, color: 'text-primary' },
+        ].map((metric, i) => (
+          <div key={i} className="p-8 bg-white dark:bg-neutral-900/50 border border-neutral-100 dark:border-neutral-800 rounded-md flex flex-col items-center justify-center space-y-4 group hover:border-primary/50 transition-all">
+            <div className={cn("p-3 rounded-md bg-neutral-50 dark:bg-black/40 group-hover:scale-110 transition-transform", metric.color)}>
+               <metric.icon className="w-6 h-6" />
+            </div>
+            <div className="text-center">
+               <div className="text-2xl md:text-3xl font-black text-neutral-950 dark:text-white">{metric.value}</div>
+               <div className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">{metric.label}</div>
+            </div>
+          </div>
+        ))}
+      </section>
+    </div>
+  );
+}
+</file>
+
+<file path="src/pages/public/ProjectDetails.tsx">
+import { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { getProjects } from '@/src/services/api';
+import { IProject } from '@/src/types';
+import { ArrowLeft, Github, Globe, CheckCircle2, AlertCircle } from 'lucide-react';
+import { motion } from 'motion/react';
+
+export default function ProjectDetails() {
+  const { id } = useParams();
+  const [project, setProject] = useState<IProject | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getProjects().then(projects => {
+      const p = Array.isArray(projects) ? projects.find(proj => proj.id === id) : null;
+      setProject(p || null);
+      setLoading(false);
+    });
+  }, [id]);
+
+  if (loading) return <div className="animate-pulse space-y-8">
+    <div className="h-10 w-32 bg-neutral-100 dark:bg-neutral-900 rounded" />
+    <div className="h-64 w-full bg-neutral-100 dark:bg-neutral-900 rounded-md" />
+  </div>;
+
+  if (!project) return (
+    <div className="flex flex-col items-center justify-center py-20 gap-4">
+      <AlertCircle className="w-12 h-12 text-red-500" />
+      <h2 className="text-xl font-bold">Project Not Found</h2>
+      <Link to="/projects" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary hover:text-primary/80 transition-colors cursor-pointer">
+        Back to Projects
+      </Link>
+    </div>
+  );
+
+  return (
+    <div className="max-w-4xl mx-auto space-y-12" id="project-details-page">
+      <Link to="/projects" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary hover:text-primary/80 transition-colors cursor-pointer">
+        <ArrowLeft className="w-4 h-4" /> Back to Projects
+      </Link>
+
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <h1 className="text-4xl font-black text-neutral-900 dark:text-neutral-100 tracking-tight">{project.title}</h1>
+          <div className="flex flex-wrap gap-2">
+            {project.techStack.map((tech, idx) => (
+              <span key={`${tech}-${idx}`} className="text-[10px] font-bold uppercase tracking-wider bg-neutral-100 dark:bg-neutral-900 px-3 py-1 rounded-full text-neutral-600 dark:text-neutral-400">
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed italic border-l-2 border-primary pl-4">
+          {project.description}
+        </p>
+
+        <div className="flex items-center gap-4 pt-4 border-t border-neutral-100 dark:border-neutral-800">
+          {project.githubLink && (
+            <a href={project.githubLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 rounded-md bg-black text-white hover:bg-neutral-800 transition-all cursor-pointer text-sm font-medium">
+              <Github className="w-4 h-4" /> Source Code
+            </a>
+          )}
+          {project.liveLink && (
+            <a href={project.liveLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 rounded-md border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-all cursor-pointer text-sm font-medium text-neutral-900 dark:text-neutral-100">
+              <Globe className="w-4 h-4" /> Live Demo
+            </a>
+          )}
+        </div>
+      </div>
+
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-12" id="project-logic">
+        <div className="space-y-4">
+          <h3 className="text-sm font-black uppercase tracking-widest text-primary">The Problem</h3>
+          <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed bg-white dark:bg-neutral-900 p-4 rounded-md border border-neutral-100 dark:border-neutral-800">
+            {project.problem}
+          </p>
+        </div>
+        <div className="space-y-4">
+          <h3 className="text-sm font-black uppercase tracking-widest text-emerald-500">The Solution</h3>
+          <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed bg-white dark:bg-neutral-900 p-4 rounded-md border border-neutral-100 dark:border-neutral-800">
+            {project.solution}
+          </p>
+        </div>
+      </section>
+
+      <section className="space-y-6" id="project-features">
+        <h3 className="text-xs font-black uppercase tracking-[0.2em] text-neutral-400">Key Features & Engineering Logic</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {project.features.map((feature, i) => (
+            <div key={i} className="flex gap-4 p-4 rounded-md bg-white dark:bg-neutral-900/40 border border-neutral-50 dark:border-neutral-800/50">
+              <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
+              <span className="text-xs text-neutral-700 dark:text-neutral-300 font-medium">{feature}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+</file>
+
+<file path="src/pages/public/Projects.tsx">
+import { useState, useEffect } from 'react';
+import { getProjects } from '@/src/services/api';
+import { IProject } from '@/src/types';
+import { ProjectCard } from '../../components/projects/ProjectCard';
+import { SearchBar } from '../../components/projects/SearchBar';
+import { Grid2X2, List, Filter } from 'lucide-react';
+import { cn } from '@/src/lib/utils';
+
+export default function Projects() {
+  const [projects, setProjects] = useState<IProject[]>([]);
+  const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+
+  useEffect(() => {
+    setLoading(true);
+    getProjects()
+      .then(setProjects)
+      .finally(() => setLoading(false));
+  }, []);
+
+  const filteredProjects = Array.isArray(projects) ? projects.filter(p =>
+    p.title.toLowerCase().includes(search.toLowerCase()) ||
+    p.description.toLowerCase().includes(search.toLowerCase()) ||
+    p.techStack.some(t => t.toLowerCase().includes(search.toLowerCase()))
+  ) : [];
+
+  return (
+    <div className="space-y-8" id="projects-page">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6" id="projects-header">
+        <div className="space-y-2">
+          <h1 className="text-2xl font-black text-neutral-900 dark:text-neutral-100">Engineering Portfolio</h1>
+          <p className="text-xs text-neutral-500 dark:text-neutral-400">A detailed collection of technical challenges and architectural solutions.</p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <SearchBar value={search} onChange={setSearch} />
+          <button className="p-2 border border-neutral-200 dark:border-neutral-800 rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-500 transition-colors cursor-pointer text-sm font-medium">
+            <Filter className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between py-4 border-y border-neutral-100 dark:border-neutral-800" id="projects-toolbar">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+          Showing {filteredProjects.length} Projects
+        </span>
+
+        <div className="flex items-center gap-2">
+           <button
+             onClick={() => setViewMode('grid')}
+             className={cn(
+               "p-1.5 rounded-md transition-colors",
+               viewMode === 'grid' ? "bg-primary/10 text-primary" : "text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+             )}
+           >
+             <Grid2X2 className="w-4 h-4" />
+           </button>
+           <button
+             onClick={() => setViewMode('list')}
+             className={cn(
+               "p-1.5 rounded-md transition-colors",
+               viewMode === 'list' ? "bg-primary/10 text-primary" : "text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+             )}
+           >
+             <List className="w-4 h-4" />
+           </button>
+        </div>
+      </div>
+
+      {loading ? (
+        <div className={cn(
+          "gap-6 animate-pulse",
+          viewMode === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "flex flex-col"
+        )}>
+           {[1,2,3].map(i => (
+             <div key={i} className={cn(
+               "bg-neutral-100 dark:bg-neutral-900 rounded-md",
+               viewMode === 'grid' ? "h-80" : "h-32"
+             )} />
+           ))}
+        </div>
+      ) : filteredProjects.length > 0 ? (
+        <div className={cn(
+          "gap-8 p-1 md:p-4",
+          viewMode === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "flex flex-col"
+        )} id={viewMode === 'grid' ? "projects-grid" : "projects-list"}>
+          {filteredProjects.map(project => (
+            <ProjectCard key={project.id} project={project} view={viewMode} />
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-20 gap-4 text-center">
+            <div className="w-12 h-12 rounded-full bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center">
+                <Filter className="w-6 h-6 text-neutral-400" />
+            </div>
+            <div className="space-y-1">
+                <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">No projects found</p>
+                <p className="text-xs text-neutral-500">Try adjusting your search terms or filters.</p>
+            </div>
+            <button
+               onClick={() => setSearch('')}
+               className="text-[10px] font-black uppercase tracking-widest text-primary hover:text-primary/80 transition-colors cursor-pointer"
+            >
+                Clear all filters
+            </button>
+        </div>
+      )}
+    </div>
+  );
+}
+</file>
+
+<file path="src/services/api.ts">
+import axios from 'axios';
+import { IProject, IProfile, IMessage, ITechLogo } from '../types';
+
+const api = axios.create({
+  baseURL: '/api',
+});
+
+// Mock Data for fallback
+export const MOCK_PROJECTS: IProject[] = [
+  {
+    id: '1',
+    title: 'E-commerce Platform',
+    description: 'A full-stack e-commerce solution with React and Node.js.',
+    techStack: ['React', 'Node.js', 'MongoDB', 'Tailwind CSS'],
+    status: 'Completed',
+    githubLink: 'https://github.com',
+    problem: 'Existing platforms were too slow.',
+    solution: 'Built a lightweight custom solution.',
+    features: ['Real-time inventory', 'Stripe integration'],
+  },
+  {
+    id: '2',
+    title: 'Task Management App',
+    description: 'Collaborative task management for teams.',
+    techStack: ['React', 'Firebase', 'Framer Motion'],
+    status: 'In Progress',
+    githubLink: 'https://github.com',
+    problem: 'Team communication fragmentation.',
+    solution: 'Centralized task tracking.',
+    features: ['Kanban boards', 'Team chat'],
+  }
+];
+
+export const MOCK_PROFILE: IProfile = {
+  fullName: 'Pawlos Gelgelo',
+  bio: 'Software Engineer dedicated to building impactful digital experiences through clean code and innovative design.',
+  cvUrl: '#',
+  profilePic: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop',
+  linkedin: '#',
+  telegram: '#',
+  github: '#',
+  website: '#',
+  address: 'Addis Ababa, Ethiopia',
+  phone: '+251 900 000 000',
+  yearsOfExperience: '3+',
+  profession: 'Software Engineer',
+  description: 'A versatile software engineer with a focus on creating scalable, user-centric applications. I thrive on solving complex problems and continually learning new frameworks to deliver high-quality software solutions.',
+  username: 'admin',
+  password: 'password123',
+};
+
+export const MOCK_MESSAGES: IMessage[] = [
+  {
+    id: '1',
+    name: 'Jane Smith',
+    email: 'jane@example.com',
+    message: 'Hello Pawlos! I am very impressed with your portfolio projects, specifically the E-commerce platform. I would love to discuss a potential partnership for an upcoming fintech project we are starting next month.',
+    createdAt: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
+    isRead: false,
+    isIgnored: false,
+  },
+  {
+    id: '2',
+    name: 'Michael Chen',
+    email: 'michael@tech-hub.io',
+    message: 'Just wanted to say keep up the great work on your LinkedIn articles. Your insights on Tailwind v4 and React 19 architecture were very helpful for our team.',
+    createdAt: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
+    isRead: true,
+    isIgnored: false,
+    repliedAt: new Date(Date.now() - 43200000).toISOString(),
+    replyText: 'Thanks Michael! Glad you found the articles useful. More coming soon!'
+  },
+  {
+    id: '3',
+    name: 'Bot Spam',
+    email: 'spam@botnet.xyz',
+    message: 'BUY BITCOIN NOW FAST EASY MONEY 1000% ROI GUARANTEED CLICK LINK BELOW NO SCAM REAL LEGIT',
+    createdAt: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
+    isRead: false,
+    isIgnored: true,
+  }
+];
+
+export const MOCK_TECH_LOGOS: ITechLogo[] = [
+  { id: '1', name: 'React', logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
+  { id: '2', name: 'Node.js', logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
+  { id: '3', name: 'TypeScript', logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg' },
+  { id: '4', name: 'MongoDB', logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg' },
+  { id: '5', name: 'Tailwind', logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original-wordmark.svg' },
+  { id: '6', name: 'Docker', logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg' },
+];
+
+// Service functions
+export const getProjects = async (search?: string): Promise<IProject[]> => {
+  try {
+    const res = await api.get('/projects', { params: { search } });
+    return res.data;
+  } catch (err) {
+    return MOCK_PROJECTS;
+  }
+};
+
+export const createProject = async (project: Partial<IProject>): Promise<IProject> => {
+  try {
+    const res = await api.post('/projects', project);
+    return res.data;
+  } catch (err) {
+    return { ...project, id: Math.random().toString(36).substr(2, 9) } as IProject;
+  }
+};
+
+export const updateProject = async (id: string, project: Partial<IProject>): Promise<void> => {
+  try {
+    await api.put(`/projects/${id}`, project);
+  } catch (err) {
+    // mock success
+  }
+};
+
+export const deleteProject = async (id: string): Promise<void> => {
+  try {
+    await api.delete(`/projects/${id}`);
+  } catch (err) {
+    // mock success
+  }
+};
+
+export const getProfile = async (): Promise<IProfile> => {
+  try {
+    const res = await api.get('/profile');
+    return res.data;
+  } catch (err) {
+    return MOCK_PROFILE;
+  }
+};
+
+export const getMessages = async (search?: string): Promise<IMessage[]> => {
+  try {
+    const res = await api.get('/messages', { params: { search } });
+    return res.data;
+  } catch (err) {
+    return MOCK_MESSAGES;
+  }
+};
+
+export const getTechLogos = async (search?: string): Promise<ITechLogo[]> => {
+  try {
+    const res = await api.get('/tech-logos', { params: { search } });
+    return res.data;
+  } catch (err) {
+    return MOCK_TECH_LOGOS;
+  }
+};
+
+export default api;
+</file>
+
+<file path="src/types.ts">
+export interface IProject {
+  id: string;
+  title: string;
+  description: string;
+  techStack: string[];
+  status: 'Completed' | 'In Progress' | 'Planned';
+  githubLink: string;
+  liveLink?: string;
+  problem: string;
+  solution: string;
+  features: string[];
+  imageUrl?: string;
+}
+
+export interface IProfile {
+  fullName: string;
+  bio: string;
+  cvUrl: string;
+  profilePic: string;
+  linkedin: string;
+  telegram: string;
+  github: string;
+  website: string;
+  address: string;
+  phone: string;
+  yearsOfExperience: string;
+  profession: string;
+  description: string;
+  username?: string;
+  password?: string;
+}
+
+export interface IMessage {
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+  createdAt: string;
+  isRead: boolean;
+  repliedAt?: string;
+  isIgnored: boolean;
+  replyText?: string;
+}
+
+export interface ITechLogo {
+  id: string;
+  name: string;
+  logoUrl: string;
+}
+</file>
+
+<file path="tailwind.config.js">
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+</file>
+
+<file path="tsconfig.app.json">
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "es2023",
+    "lib": ["ES2023", "DOM"],
+    "module": "esnext",
+    "types": ["vite/client"],
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"]
+}
+</file>
+
+<file path="tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
+    "module": "ESNext",
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  }
+}
+</file>
+
+<file path="tsconfig.node.json">
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "target": "es2023",
+    "lib": ["ES2023"],
+    "module": "esnext",
+    "types": ["node"],
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["vite.config.ts"]
+}
+</file>
+
+<file path="vite.config.ts">
+import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
+import {defineConfig, loadEnv} from 'vite';
+
+export default defineConfig(({mode}) => {
+  const env = loadEnv(mode, '.', '');
+  return {
+    plugins: [react(), tailwindcss()],
+    define: {
+      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
+    },
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, '.'),
+      },
+    },
+    server: {
+      // HMR is disabled in AI Studio via DISABLE_HMR env var.
+      // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
+      hmr: process.env.DISABLE_HMR !== 'true',
+      // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
+      watch: process.env.DISABLE_HMR === 'true' ? null : {},
+    },
+  };
+});
+</file>
+
+</files>

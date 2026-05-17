@@ -1,57 +1,115 @@
-import { useState, FormEvent } from 'react';
-import { Send, CheckCircle, Mail, MapPin, Linkedin } from 'lucide-react';
-import { motion } from 'motion/react';
+import { useState, useEffect, FormEvent } from "react";
+import { Send, CheckCircle, Mail, MapPin, Linkedin } from "lucide-react";
+import { motion } from "motion/react";
+import api, { getProfile } from "@/src/services/api";
+import { IProfile } from "@/src/types";
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState<"idle" | "submitting" | "success">(
+    "idle",
+  );
+  const [profile, setProfile] = useState<IProfile | null>(null);
 
-  const handleSubmit = (e: FormEvent) => {
+  // Fetch the profile data when the component mounts
+  useEffect(() => {
+    getProfile().then(setProfile).catch(console.error);
+  }, []);
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setStatus('submitting');
-    // Simulate API call
-    setTimeout(() => {
-      setStatus('success');
-      setForm({ name: '', email: '', message: '' });
-      setTimeout(() => setStatus('idle'), 5000);
-    }, 1500);
+    setStatus("submitting");
+
+    try {
+      await api.post("/messages", form);
+
+      setStatus("success");
+      setForm({ name: "", email: "", message: "" });
+      setTimeout(() => setStatus("idle"), 5000);
+    } catch (error) {
+      console.error("Failed to send message:", error);
+      alert("Failed to send message. Please try again later.");
+      setStatus("idle");
+    }
   };
 
   return (
-    <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 py-8" id="contact-page">
+    <div
+      className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 py-8"
+      id="contact-page"
+    >
       <div className="space-y-8">
         <div className="space-y-4">
-          <h1 className="text-3xl font-black text-neutral-900 dark:text-neutral-100">Get in Touch</h1>
-          <p className="text-sm text-neutral-500 dark:text-neutral-400">Have a technical project or inquiry? I'm always open to discussing architectural solutions.</p>
+          <h1 className="text-3xl font-black text-neutral-900 dark:text-neutral-100">
+            Get in Touch
+          </h1>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+            Have a technical project or inquiry? I'm always open to discussing
+            architectural solutions.
+          </p>
         </div>
 
         <div className="space-y-6">
           <div className="flex gap-4 p-4 rounded-md bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800">
-             <div className="p-2 rounded-md bg-primary/10 text-primary"><Mail className="w-5 h-5" /></div>
-             <div className="space-y-1">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Email</p>
-                <p className="text-xs font-semibold">pawlos@example.com</p>
-             </div>
+            <div className="p-2 rounded-md bg-primary/10 text-primary">
+              <Mail className="w-5 h-5" />
+            </div>
+            <div className="space-y-1">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+                Email
+              </p>
+              {/* Dynamically display username (email) or a loading state */}
+              <p className="text-xs font-semibold">
+                {profile ? profile.username : "Loading..."}
+              </p>
+            </div>
           </div>
           <div className="flex gap-4 p-4 rounded-md bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800">
-             <div className="p-2 rounded-md bg-primary/10 text-primary"><MapPin className="w-5 h-5" /></div>
-             <div className="space-y-1">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Location</p>
-                <p className="text-xs font-semibold">Addis Ababa, Ethiopia</p>
-             </div>
+            <div className="p-2 rounded-md bg-primary/10 text-primary">
+              <MapPin className="w-5 h-5" />
+            </div>
+            <div className="space-y-1">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+                Location
+              </p>
+              {/* Dynamically display address */}
+              <p className="text-xs font-semibold">
+                {profile ? profile.address : "Loading..."}
+              </p>
+            </div>
           </div>
           <div className="flex gap-4 p-4 rounded-md bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800">
-             <div className="p-2 rounded-md bg-primary/10 text-primary"><Linkedin className="w-5 h-5" /></div>
-             <div className="space-y-1">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">LinkedIn</p>
-                <p className="text-xs font-semibold">linkedin.com/in/pawlosgelgelo</p>
-             </div>
+            <div className="p-2 rounded-md bg-primary/10 text-primary">
+              <Linkedin className="w-5 h-5" />
+            </div>
+            <div className="space-y-1">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+                LinkedIn
+              </p>
+              {/* Dynamically display linkedin URL and make it clickable */}
+              {profile && profile.linkedin ? (
+                <a
+                  href={
+                    profile.linkedin.startsWith("http")
+                      ? profile.linkedin
+                      : `https://${profile.linkedin}`
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-semibold hover:text-primary transition-colors"
+                >
+                  {profile.linkedin.replace("https://", "").replace("www.", "")}
+                </a>
+              ) : (
+                <p className="text-xs font-semibold">Loading...</p>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       <div className="bg-white dark:bg-neutral-900 p-8 rounded-md border border-neutral-100 dark:border-neutral-800 relative overflow-hidden">
-        {status === 'success' ? (
+        {status === "success" ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -62,13 +120,17 @@ export default function Contact() {
             </div>
             <div className="space-y-2">
               <h2 className="text-lg font-bold">Message Sent!</h2>
-              <p className="text-xs text-neutral-500">Thank you for reaching out. I will get back to you shortly.</p>
+              <p className="text-xs text-neutral-500">
+                Thank you for reaching out. I will get back to you shortly.
+              </p>
             </div>
           </motion.div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Full Name</label>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+                Full Name
+              </label>
               <input
                 required
                 type="text"
@@ -79,7 +141,9 @@ export default function Contact() {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Email Address</label>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+                Email Address
+              </label>
               <input
                 required
                 type="email"
@@ -90,7 +154,9 @@ export default function Contact() {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Your Message</label>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+                Your Message
+              </label>
               <textarea
                 required
                 rows={4}
@@ -101,12 +167,17 @@ export default function Contact() {
               />
             </div>
             <button
-              disabled={status === 'submitting'}
+              disabled={status === "submitting"}
               type="submit"
               className="w-full py-3 bg-primary text-white rounded-md disabled:opacity-50 transition-all flex items-center justify-center gap-2 group cursor-pointer text-sm font-medium"
             >
-              {status === 'submitting' ? 'Transmitting...' : (
-                <>Send Message <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" /></>
+              {status === "submitting" ? (
+                "Transmitting..."
+              ) : (
+                <>
+                  Send Message{" "}
+                  <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                </>
               )}
             </button>
           </form>

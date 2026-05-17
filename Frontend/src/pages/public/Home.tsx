@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getProfile, getTechLogos, MOCK_PROFILE } from '@/src/services/api';
+import { getProfile, getTechLogos } from '@/src/services/api';
 import { IProfile, ITechLogo } from '@/src/types';
 import { Download, Github, Linkedin, Send, ArrowRight, Smile, Zap, Award, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -7,13 +7,24 @@ import { motion } from 'motion/react';
 import { cn } from '@/src/lib/utils';
 
 export default function Home() {
-  const [profile, setProfile] = useState<IProfile>(MOCK_PROFILE);
+  const [profile, setProfile] = useState<IProfile | null>(null);
   const [techLogos, setTechLogos] = useState<ITechLogo[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getProfile().then(setProfile);
-    getTechLogos().then(setTechLogos);
+    Promise.all([
+      getProfile().then(setProfile).catch(() => setProfile(null)),
+      getTechLogos().then(setTechLogos).catch(() => setTechLogos([]))
+    ]).finally(() => setLoading(false));
   }, []);
+
+  if (loading) {
+    return <div className="flex justify-center py-20 text-neutral-500">Loading...</div>;
+  }
+
+  if (!profile) {
+    return <div className="flex justify-center py-20 text-red-500">Failed to load profile. Ensure the backend is running.</div>;
+  }
 
   return (
     <div className="flex flex-col gap-24 py-12" id="home-page">
