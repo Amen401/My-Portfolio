@@ -19,16 +19,22 @@ const app = express();
 // Database
 connectDB();
 
+const cors = require("cors");
+
 app.use(
   cors({
-    origin: "https://paul-gelgelo-portfolio.vercel.app", // Ensure this matches exactly your frontend URL
+    origin: [
+      "http://localhost:5173", // Vite local dev
+      "https://paul-gelgelo-portfolio.vercel.app",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   }),
 );
+
+app.use(express.json());
 // Middlewares
 app.use(helmet());
-app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
