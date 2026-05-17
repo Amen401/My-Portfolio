@@ -6,7 +6,7 @@ const morgan = require("morgan");
 const connectDB = require("./config/db");
 const errorHandler = require("./middlewares/errorHandler");
 
-// Routes
+// Route Imports
 const profileRoutes = require("./routes/profileRoutes");
 const authRoutes = require("./routes/authRoutes");
 const projectRoutes = require("./routes/projectRoutes");
@@ -16,37 +16,24 @@ const statsRoutes = require("./routes/statsRoutes");
 
 const app = express();
 
-/* -------------------- DATABASE -------------------- */
-connectDB().catch((err) => {
-  console.error("❌ Database connection failed:", err);
-});
+// Database
+connectDB();
 
-/* -------------------- MIDDLEWARES -------------------- */
-
-// CORS (production-safe)
 app.use(
   cors({
-    origin: ["https://paul-gelgelo-portfolio.vercel.app/"],
+    origin: "https://paul-gelgelo-portfolio.vercel.app/", // Ensure this matches exactly your frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   }),
 );
-
-// Security + logging
+// Middlewares
 app.use(helmet());
 app.use(express.json());
 app.use(morgan("dev"));
 
-/* -------------------- ROUTES -------------------- */
-
 app.get("/", (req, res) => {
-  res.status(200).send("Portfolio backend is running 🚀");
+  res.status(200).send("Portfolio backend is running");
 });
-
-app.get("/api/health", (req, res) => {
-  res.json({ status: "ok" });
-});
-
 // API Routes
 app.use("/api/profile", profileRoutes);
 app.use("/api/auth", authRoutes);
@@ -55,10 +42,11 @@ app.use("/api/tech-logos", techRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/stats", statsRoutes);
 
-/* -------------------- ERROR HANDLER -------------------- */
+// Health Check
+app.get("/api/health", (req, res) => res.json({ status: "ok" }));
+
+// Global Error Handler (Must be used after routes)
 app.use(errorHandler);
 
-/* -------------------- IMPORTANT FOR VERCEL -------------------- */
-// ❌ DO NOT use app.listen() in Vercel
-
-module.exports = app;
+const PORT = process.env.PORT || 5001;
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
