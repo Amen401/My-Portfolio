@@ -19,18 +19,16 @@ const app = express();
 // Database
 connectDB();
 
-const cors = require("cors");
-
 app.use(
   cors({
-    origin: "https://paul-gelgelo-portfolio.vercel.app",
+    origin: "https://paul-gelgelo-portfolio.vercel.app", // Ensure this matches exactly your frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   }),
 );
-
 // Middlewares
 app.use(helmet());
+app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
