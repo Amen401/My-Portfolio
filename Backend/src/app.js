@@ -32,7 +32,6 @@ app.use(
   }),
 );
 
-app.use(express.json());
 // Middlewares
 app.use(helmet());
 app.use(express.json());
