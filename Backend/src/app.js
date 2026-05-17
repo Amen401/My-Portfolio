@@ -32,6 +32,9 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
+app.get("/", (req, res) => {
+  res.status(200).send("Portfolio backend is running");
+});
 // API Routes
 app.use("/api/profile", profileRoutes);
 app.use("/api/auth", authRoutes);
