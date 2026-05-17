@@ -18,10 +18,13 @@ export default function Login() {
 
     try {
       // Sending request to your Node.js backend
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
-        username: email, // Matches the 'username' field in your Profile model
-        password: password,
-      });
+      const res = await axios.post(
+        "https://paul-portifolio-backend.vercel.app/api/auth/login",
+        {
+          username: email, // Matches the 'username' field in your Profile model
+          password: password,
+        },
+      );
 
       // res.data should contain { token, user: { email, name } }
       const { token, user } = res.data;
