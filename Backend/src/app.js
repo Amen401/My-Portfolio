@@ -26,7 +26,7 @@ connectDB().catch((err) => {
 // CORS (production-safe)
 app.use(
   cors({
-    origin: ["https://paul-gelgelo-portfolio.vercel.app"],
+    origin: ["https://paul-gelgelo-portfolio.vercel.app/"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   }),
