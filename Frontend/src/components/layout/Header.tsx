@@ -1,14 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { LayoutGrid, Home, Mail, User, Shield, Menu, X } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 import { ThemeToggle } from "./ThemeToggle";
 import { useAuth } from "@/src/contexts/AuthContext";
+import { getProfile } from "@/src/services/api";
+import { IProfile } from "@/src/types";
 
 export function Header() {
   const location = useLocation();
   const { isAuthenticated } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [profile, setProfile] = useState<IProfile | null>(null);
+
+  useEffect(() => {
+    getProfile().then(setProfile).catch(console.error);
+  }, []);
 
   const navItems = [
     { name: "Home", path: "/", icon: Home },
@@ -29,11 +36,15 @@ export function Header() {
           className="flex items-center gap-3 group cursor-pointer"
           id="logo-link"
         >
-          <div className="w-10 h-10 rounded-md bg-primary flex items-center justify-center text-white font-bold text-lg group-hover:scale-110 transition-transform">
-            P
+          <div className="w-10 h-10 rounded-md bg-primary flex items-center justify-center text-white font-bold text-lg group-hover:scale-110 transition-transform uppercase">
+            {/* Automatically uses the first letter of the fetched name, defaults to P */}
+            {profile?.fullName ? profile.fullName.charAt(0) : "P"}
           </div>
           <span className="text-base font-bold tracking-tight text-neutral-900 dark:text-neutral-100 uppercase hidden sm:block">
-            Portfolio
+            {/* Displays the full name from the backend, defaults to Portfolio */}
+            {profile?.fullName
+              ? `${profile.fullName.split(" ")[0]}'s Portfolio`
+              : "Portfolio"}
           </span>
         </Link>
 
