@@ -51,5 +51,13 @@ app.get("/api/health", (req, res) => res.json({ status: "ok" }));
 // Global Error Handler (Must be used after routes)
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+// const PORT = process.env.PORT || 5001;
+// app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
+app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.send("API running");
+});
+
+module.exports = app;
