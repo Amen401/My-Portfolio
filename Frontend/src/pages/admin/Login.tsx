@@ -19,7 +19,7 @@ export default function Login() {
     try {
       // Sending request to your Node.js backend
       const res = await axios.post(
-        "http://pau-porif-back.vercel.app/api/auth/login",
+        "https://pau-porif-back.vercel.app/api/auth/login",
         {
           username: email, // Matches the 'username' field in your Profile model
           password: password,
