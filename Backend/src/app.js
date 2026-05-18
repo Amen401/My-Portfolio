@@ -19,18 +19,29 @@ const app = express();
 // Connect Database
 connectDB();
 
-// ✅ LOCALHOST ONLY CORS
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000",
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = [
       "http://localhost:5173",
-      "https://paul-gelgelo-portifolio.vercel.app/",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  }),
-);
+      "http://localhost:3000",
+      "https://paul-gelgelo-portifolio.vercel.app",
+    ];
+
+    // allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // IMPORTANT for Vercel / preflight
 
 // Middlewares
 app.use(helmet());
