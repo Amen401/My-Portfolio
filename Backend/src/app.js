@@ -19,12 +19,15 @@ const app = express();
 // Connect Database
 connectDB();
 
-const cors = require("cors");
-
 app.use(
   cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "https://paul-gelgelo-portifolio.vercel.app/",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
   }),
 );
 
