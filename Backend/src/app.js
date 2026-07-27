@@ -22,9 +22,9 @@ connectDB();
 app.use(
   cors({
     origin: [
-      "http://localhost:3000",
       "http://localhost:5173",
-      "https://paul-gelgelo-portifolio.vercel.app/",
+      "http://localhost:3000",
+      "https://paul-gelgelo-portifolio.vercel.app",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
