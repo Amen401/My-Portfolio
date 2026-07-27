@@ -19,26 +19,26 @@ const app = express();
 // Connect Database
 connectDB();
 
+// Middlewares
 app.use(
   cors({
     origin: [
-      "http://localhost:5173",
       "http://localhost:3000",
+      "http://localhost:5173",
       "https://paul-gelgelo-portifolio.vercel.app",
     ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   }),
 );
 
-// Middlewares
 app.use(helmet());
 app.use(express.json());
 app.use(morgan("dev"));
 
 // Root Route
 app.get("/", (req, res) => {
-  res.status(200).send("Portfolio backend is running (localhost mode)");
+  res.status(200).send("Portfolio backend is running");
 });
 
 // API Routes
@@ -51,15 +51,16 @@ app.use("/api/stats", statsRoutes);
 
 // Health Check
 app.get("/api/health", (req, res) => {
-  res.json({ status: "ok", mode: "localhost" });
+  res.json({ status: "ok" });
 });
 
 // Global Error Handler
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5001;
+
 app.listen(PORT, () => {
-  console.log(`🚀 Server running locally on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
 
 module.exports = app;
