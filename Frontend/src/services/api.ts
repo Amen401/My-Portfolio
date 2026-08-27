@@ -2,7 +2,7 @@ import axios from 'axios';
 import { IProject, IProfile, IMessage, ITechLogo } from '../types';
 
 const api = axios.create({
-  baseURL: 'https://pau-porif-back.vercel.app/api', // Ensure this matches your backend PORT
+  baseURL: 'https://my-portifolio-backend-swart.vercel.app/api', // Ensure this matches your backend PORT
 });
 
 api.interceptors.request.use((config) => {

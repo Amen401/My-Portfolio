@@ -22,11 +22,14 @@ connectDB();
 // Middlewares
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "http://localhost:5173",
-      "https://paul-gelgelo-portifolio.vercel.app",
-    ],
+    origin: process.env.FRONTEND_URL
+      ? [process.env.FRONTEND_URL, ...(process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(",") : [])]
+      : [
+          "http://localhost:3000",
+          "http://localhost:5173",
+          "https://paul-gelgelo-portifolio.vercel.app",
+          "https://pawlos-gelgelo-portifolio.vercel.app",
+        ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   }),
