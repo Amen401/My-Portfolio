@@ -136,7 +136,7 @@ export default function Home() {
             Explore Projects <ArrowRight className="w-5 h-5" />
           </Link>
           <a
-            href="../public/Pawlos Gelgelo.pdf"
+            href="/Pawlos%20Gelgelo.pdf"
             download
             className="px-10 py-5 border-2 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-all flex items-center gap-3 cursor-pointer text-sm font-medium"
           >
