@@ -14,6 +14,27 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+function normalizeIds<T>(value: T): T {
+  if (Array.isArray(value)) {
+    return value.map(normalizeIds) as unknown as T;
+  }
+  if (value && typeof value === 'object') {
+    const obj = value as Record<string, unknown>;
+    if ('_id' in obj && !('id' in obj)) {
+      obj.id = String(obj._id);
+    }
+    for (const key of Object.keys(obj)) {
+      obj[key] = normalizeIds(obj[key]);
+    }
+  }
+  return value;
+}
+
+api.interceptors.response.use((response) => {
+  response.data = normalizeIds(response.data);
+  return response;
+});
+
 // Service functions
 export const getProjects = async (search?: string): Promise<IProject[]> => {
   const res = await api.get('/projects', { params: { search } });
