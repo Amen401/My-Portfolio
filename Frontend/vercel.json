@@ -1,6 +1,22 @@
 {
   "outputDirectory": "dist",
+  "headers": [
+    {
+      "source": "/Pawlos-Gelgelo.pdf",
+      "headers": [
+        { "key": "Content-Type", "value": "application/pdf" },
+        { "key": "Content-Disposition", "value": "attachment; filename=\"Pawlos-Gelgelo.pdf\"" }
+      ]
+    }
+  ],
   "routes": [
+    {
+      "src": "/Pawlos-Gelgelo\\.pdf",
+      "headers": [
+        { "key": "Content-Type", "value": "application/pdf" },
+        { "key": "Content-Disposition", "value": "attachment; filename=\"Pawlos-Gelgelo.pdf\"" }
+      ]
+    },
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
