@@ -137,7 +137,7 @@ export default function Home() {
           </Link>
           <a
             href="/Pawlos-Gelgelo.pdf"
-            download
+            download="Pawlos-Gelgelo.pdf"
             className="px-10 py-5 border-2 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-all flex items-center gap-3 cursor-pointer text-sm font-medium"
           >
             Download Resume <Download className="w-5 h-5" />
